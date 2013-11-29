@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+</head>
+<body>
+<button id="showDialog">显示对话框</button>
+<script type="text/javascript" src="http://ctc.qzonestyle.gtimg.cn/ac/qzone/qzfl/qzfl_v8_2.1.39.js" ></script>
+<script type="text/javascript" src="http://ctc.qzonestyle.gtimg.cn/ac/lib/seajs/sea-2.1.1.js" ></script>
+<script>
+var g_domain;
+if(location.href.indexOf("drop_domain=qzone.qq.com")>=0){
+	g_domain = "qzone.qq.com";
+} else if(location.href.indexOf("drop_domain=qzone.com")>=0){
+	g_domain = "qzone.com";
+}else{
+	g_domain = "qq.com";
+}
+document.domain=g_domain;
+
+var siDomain = 'ctc.qzonestyle.gtimg.cn';
+seajs.config({
+	charset:'utf-8',
+	timeout:5*60*1000,
+	debug:0,
+	paths : {
+		'v8' : 'http://' + siDomain +'/qzone/v8',
+		'photo.v7' : 'http://' + siDomain +'/qzone/photo/v7/js',
+		'cssBase' : 'http://' + siDomain,
+		'app':'http://'+siDomain+'/qzone/app',
+		'mall.v8':'http://'+siDomain+'/qzone/mall/v8'
+	},
+	alias : {
+		'jquery' : 'http://'+siDomain+'/ac/lib/jquery/jquery-2.0.0',
+		'migrate-plugin' : 'v8/engine/migrate-plugin.js',
+		'interface' : 'v8/core/interface_mini.js',
+		'app_engine' : 'v8/core/app_engine'+ ((window.g_diffModules && g_diffModules.engine) ? g_diffModules.engine : "") +'.js',
+		'changelog_data' : 'http://'+siDomain+'/qzone/v6/v6_config/changelog_data.js'
+	},
+	map : [
+		[/^.+\/lib\/jquery\.js$/,'http://'+siDomain+'/ac/lib/jquery/jquery-2.0.0.js']
+	],
+	comboSyntax: ['c/=', ','],
+	comboIncludes : /\/qzone\/v8/,
+	comboExcludes : /jquery/,
+	preload : ['migrate-plugin','interface','app_engine']
+});
+</script>
+
+<script type="text/javascript">
+seajs.use(['jquery'], function ($) {
+	
+	$('#showDialog').click(function () {
+
+		// 演示代码开始
+		top.QZONE.FrontPage.popupDialog({
+		    url: '/qzone/v8/engine/popup/test/qzone/content.html',
+		    title: 'loading..',
+		    width: 550,
+		    //height: 250,
+		    oniframeload: function (iframeNode) {console.log('iframe ready')},
+		    onshow: function () {console.log('onshow')},
+		    onclose: function (val) {console.log('返回值：' + val)},
+		    onremove: function () {console.log('onremove')},
+		    data: {test: 8},    // 给 iframe 传递的数据
+		    fixed: true         // 是否固定不动
+		});
+		// 演示代码结束
+	});
+});
+
+
+</script>
+
+</body>
+</html>
