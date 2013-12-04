@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<style>
+		html, body {
+			height: 100%;
+		}
+		label {
+			vertical-align: middle;
+		}
+		#header {
+			padding: 40px 0;
+		}
+		#start {
+			min-width: 120px;
+			text-decoration:none;
+			font-size: 12px;
+			font-weight: 700;
+			color: white;
+			text-shadow: 0 -1px 0 rgba(0, 0, 0, .5);
+			display: inline-block;
+			padding: 6px 16px 4px;
+			border: 1px solid #3A5615;
+			border-radius: 6px;
+			background: #5F9614;
+			background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5F9513), color-stop(0.5, #73A91C), color-stop(0.5, #82B334), color-stop(1, #95C04B));
+			background-image: -moz-linear-gradient(center bottom, #5F9513 0%, #73A91C 50%, #82B334 50%, #95C04B 100%);
+			-webkit-background-clip: padding-box;
+			-moz-background-clip: padding-box;
+			background-clip: padding-box;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, .2), inset 0 0 1px rgba(255, 255, 255, .4), inset 0 1px 0 rgba(255, 255, 255, .5);
+			cursor: pointer;
+			outline: 0 none;
+		}
+	</style>
+	<style>
+		.ui-selectbox{display:inline-block;*zoom:1;*display:inline;position:relative;padding:0;text-align:left;vertical-align:middle;border-radius:3px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);border:1px solid #DDD;border-top:1px solid #EEE;border-bottom:1px solid #b7b7b7;*zoom:1;*overflow:visible;outline:0 none;background:#fafafa;background:-moz-linear-gradient(top,#fafafa 0,#e5e5e5 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#fafafa),color-stop(100%,#e5e5e5));background:-webkit-linear-gradient(top,#fafafa 0,#e5e5e5 100%);background:-o-linear-gradient(top,#fafafa 0,#e5e5e5 100%);background:-ms-linear-gradient(top,#fafafa 0,#e5e5e5 100%);background:linear-gradient(to bottom,#fafafa 0,#e5e5e5 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#e5e5e5',GradientType=0);-webkit-transition:all linear .2s;-moz-transition:all linear .2s;-o-transition:all linear .2s;transition:all linear .2s}.ui-selectbox::-moz-focus-inner{border:0;padding:0}select[disabled]+.ui-selectbox{color:#CCC;cursor:default;box-shadow:none;opacity:.7}.ui-selectbox-inner{display:block;margin:0 5px;font-size:12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ui-selectbox .ui-selectbox-icon{position:absolute;right:4px;top:50%;margin-top:-2px;border-top:5px solid #a7a7a7;border-left:5px dashed transparent;border-right:5px dashed transparent;border-bottom:0 none;display:block;width:0;height:0;overflow:hidden;line-height:0;font-size:0;_color:#ff3fff;_filter:chroma(color=#FF3FFF)}.ui-selectbox-open .ui-selectbox-icon{margin-top:-3px;border-top:0 none;border-bottom:5px solid #a7a7a7}.ui-selectbox-focus{border:1px solid #09E;outline:0 none;box-shadow:0 0 3px #06C}.ui-selectbox-dropdown{margin:0;padding:0;font-size:12px;list-style:none;overflow-y:auto;overflow-x:hidden;border:1px solid #ccc;background:#FFF;box-shadow:0 0 8px rgba(0,0,0,0.1);border:solid 1px #dcdcdc}.ui-selectbox-dropdown::-webkit-scrollbar{width:12px;height:12px;overflow:visible}.ui-selectbox-dropdown::-webkit-scrollbar-button{height:0;width:0}.ui-selectbox-dropdown::-webkit-scrollbar-track{background-clip:padding-box}.ui-selectbox-dropdown::-webkit-scrollbar-track:hover{background-color:rgba(0,0,0,.04);box-shadow:inset 1px 0 0 rgba(0,0,0,.05)}.ui-selectbox-dropdown::-webkit-scrollbar-track:active{background-color:rgba(0,0,0,.05);box-shadow:inset 1px 0 0 rgba(0,0,0,.14),inset -1px 0 0 rgba(0,0,0,.07)}.ui-selectbox-dropdown::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.14);background-clip:padding-box;border:solid transparent;border-width:1px 2px;box-shadow:inset 1px 1px 0 rgba(0,0,0,.12),inset 0 -1px 0 rgba(0,0,0,.07)}.ui-selectbox-dropdown::-webkit-scrollbar-thumb:hover{background-color:rgba(0,0,0,.28);box-shadow:inset 1px 1px 1px rgba(0,0,0,.25)}.ui-selectbox-dropdown::-webkit-scrollbar-thumb:active{background-color:rgba(0,0,0,.5);box-shadow:inset 1px 1px 3px rgba(0,0,0,.35)}.ui-selectbox-optgroup,.ui-selectbox-option{margin:0;padding:8px 10px;white-space:nowrap;cursor:pointer;color:#555;background:transparent;outline:0 none}.ui-selectbox-optgroup{cursor:default;color:#000;font-weight:bold;font-style:italic}.ui-selectbox-option:hover{background:#EEE}.ui-selectbox-option:focus{outline:0 none}.ui-selectbox-dropdown .ui-selectbox-selected,.ui-selectbox-dropdown .ui-selectbox-selected:hover{background:#3870f3;color:#FFF}.ui-selectbox-dropdown .ui-selectbox-disabled,.ui-selectbox-dropdown .ui-selectbox-disabled:hover{color:#CCC;cursor:default;background:#FFF}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script>
+	eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('5 D=4(a){4 e(){3.1q=!1,3.C=a("<1e />").1D({1w:"-1"}).I({3q:"1z",1m:"1H",J:0,L:0,2S:"16",2R:"16",3H:0,3V:0,34:0,3c:"0 1z",2Q:"3r"}).2O("2M"),3.Z=a("<1e />"),3.1B=3.C[0],3.1Q=3.Z[0],b++,e.2L(3)}4 f(b,c){a.18(3,c||{});5 d=3,e=!("1v"1l a("H")[0].1t);T(b=3.A=a(b),!b.3Z("[2U]")){b.F("D")&&b.F("D").O();5 f=3.1r(3.2K,a.18({1E:d.1k().H()},b.F()));3.G=a(f),3.1K=3.G.R("[F-U]"),3.1u=a.3l(3.1u,3),b.K("E X",4(a){d[a.29](),a.1N()}).K("1G",4(){5 a=d.1k().H();d.1K.H(a)}),3.G.K("1L E X",4(a){d[a.29]()}).I({M:b.1g()+"12"}),3.1K.I({N:b.1y()+"12",3w:b.1y()+"12"}),b.I({1T:0,1m:"1H",J:e?"-3D":"16",2R:"16",L:"16",2S:"16",V:3.2J?-1:1}).F("D",3),b.3Y(3.G)}}5 b=0,c=!("1v"1l a("H")[0].1t),d=!c;a.18(e.1s,{1B:1C,1Q:1C,1d:!1,1f:0,1q:!0,15:!1,2I:"",1V:!0,2G:"#3x",1Y:.7,P:4(b){T(3.1q||3.15)6 3;5 d=3;6 3.2F=3.25(),3.15=!0,3.C.P().Y("B-1a-P").1D("2E",3.19?"3m":"3p").I("1m",3.1d?"1d":"1H"),3.Z.P(),3.2C||(3.19&&3.2z(),3.C.K("3s 3v",4(){d.E()}),a(17).K("2e",3.2T=4(){!c&&d.1F()}),3.2C=!0),3.1F(b).E(),3.11("P"),3},2w:4(){6 3.19=!0,3.P.3K(3,2t)},Q:4(a){6!3.1q&&3.15&&(2s 0!==a&&(3.2I=a),3.C.2r().1i("B-1a-P"),3.Z.2r(),3.15=!1,3.X(),3.11("Q")),3},H:4(a){6 3.C.H(a),3},O:4(){T(3.1q)6 3;3.11("3b"),e.1o===3&&(e.1o=1C),3.2o(),3.C.O(),3.Z.O(),3.X(),a(17).2n("2e",3.2T),3.11("O");2d(5 b 1l 3)1M 3[b];6 3},1F:4(a){5 b=a||3.1x;6 b?3.2m(b):3.1P(),3.11("1F"),3},E:4(){5 b=3.1B,c=e.1o;6 c&&c!==3&&c.X(!1),a.41(b,3.25())||3.1R(3.C.R("[1V]")[0]||b),e.1o=3,3.C.Y("B-1a-E"),3.1S(),3.11("E"),3},X:4(){5 a=3.2F,b=2t[0];6 b!==!1&&a&&!/^3z$/i.3A(a.3B)&&3.1R(a),3.C.1i("B-1a-E"),3.11("X"),3},3C:4(a,b){6 3.1A(a).3F(b),3},3G:4(a,b){2d(5 c=3.1A(a),d=0;d<c.1n;d++)b===c[d]&&c.3I(d--,1);6 3},1A:4(a){5 b=3.2l;6 b||(b=3.2l={}),b[a]||(b[a]=[]),b[a]},11:4(a){5 b=3.1A(a);3["K"+a]&&3["K"+a]();2d(5 c=0;c<b.1n;c++)b[c].3T(3)},1R:4(a){2k{3.1V&&a.E()}2j(b){}},25:4(){2k{5 a=14.2i,b=a.32,c=b&&b.2i||a;6 c}2j(d){}},1S:4(){5 a=e.V++;3.C.I("V",a),3.Z.I("V",a-1),3.V=a},1P:4(){5 b=3.C,c=a(17),d=a(14),e=3.1d,f=e?0:d.20(),g=e?0:d.22(),h=c.M(),i=c.N(),j=b.M(),k=b.N(),l=(h-j)/2+f,m=3t*(i-k)/3u+g,n=b[0].1t;n.J=2a.2b(2h(l),f)+"12",n.L=2a.2b(2h(m),g)+"12",3.2c()},2m:4(b){5 c=b.2f&&a(b),d=c?3.1f:0;T(c){5 e=c.1f();T(e.J*e.L<=0)6 3.1P()}5 f="B-1a-",g=3.1d,h=3.C,i=a(17),j=a(14),k=i.M(),l=i.N(),m=j.20(),n=j.22(),o=h.M(),p=h.N(),q=c?c.1g():0,r=c?c.1y():0,e=3.2g(b),s=e.J,t=e.L,u=g?s-m:s,v=g?t-n:t,w=u,x=v+r,y=g?0:m,z=g?0:n;x+p>l+z&&v-p>z?(x=v-p-d,f+="s"):(x+=d,f+="n"),w+o>k+y&&u-o>y?(w=u-o+q,f+="e"):f+="w",h.I({J:w,L:x}),3.2c(),3.2p=f,3.1x=b,c&&h.Y(f)},2c:4(){3.1x&&(3.C.1i(3.2p),1M 3.1x)},2g:4(b){5 c=b.2f,d=c?a(b).1f():{J:b.2V,L:b.2W};b=c?b:b.2X;5 e=b.2Y,f=e.2Z||e.30;T(f==17)6 d;5 g=f.31,h=a(e),i=h.20(),j=h.22(),k=a(g).1f(),l=k.J,m=k.L;6{J:d.J+l-i,L:d.L+m-j}},2z:4(){5 b=3,c=3.C,f=3.Z,g={1m:"1d",J:0,L:0,M:"2q%",N:"2q%",33:"26",35:"1z",1T:0,2Q:3.2G};c.Y("B-1a-19"),e.V=e.V+2,3.1S(),d||a.18(g,{1m:"1H",M:a(17).M()+"12",N:a(14).N()+"12"}),f.I(g).36({1T:3.1Y},37).2O("2M").1D({1w:"0"}).K("E",4(){b.E()})},2o:4(){3.19&&(3.C.Y("B-1a-19"),3.Z.O(),1M 3.19)}}),e.V=39,e.1o=1C,e.2L=a.3a;5 g=4(){};6 g.1s=e.1s,f.1s=1J g,a.18(f.1s,{2K:\'<1e 1h="B-D" 3d="3e" 1t="3f-A:1z" 3g="6 3h" 1w="-1" 3i-26><1e 1h="B-D-3j" F-U="">{{1E}}</1e><i 1h="B-D-3k"></i></1e>\',2u:\'<2v 1h="B-D-3n" 2E="3o">{{21}}</2v>\',2x:\'<2y 1h="B-D-1W">{{1U}}</2y>\',2A:\'<2B 1h="B-D-S {{2D}}" F-S="{{1O}}" 1w="-1">{{1E}}</2B>\',24:"B-D-1p",2H:"B-D-10",1Z:"B-D-E",1X:"B-D-15",2J:!("3E"1l 14),W:0,U:"",Q:4(){3.1j&&3.1j.Q().O()},P:4(){5 b=3,c=3.A;T(c[0].10)6!1;5 d=3.1j=1J e;d.1f=0,d.1Y=0,d.H(3.2N()),3.1c=a(d.1B),3.1c.K("1L","[F-S]",4(c){5 d=a(3).F("S");b.1p(d),b.Q(),c.1N()}),d.3J=4(){a(14).K("2P",b.1u),b.G.Y(b.1X)},d.3L=4(){a(14).2n("2P",b.1u),b.G.1i(b.1X)},a(d.1Q).K("1L",4(){b.Q()}),d.2w(3.G[0]);5 f=!("1v"1l a("H")[0].1t),g=3.1c.3M();3.1c.I({1v:b.G.1g()}),g.I({1v:b.G.1g()-2,M:f?2a.2b(c.1g(),g.1g()):g.M(),3N:"16",3O:"26",3P:a(17).N()-c.1y()})},1p:4(a){T(3.1k(a).1D("10"))6!1;5 b=3.1c,c=3.1c.R("[F-S="+a+"]"),d=3.A[0].21[a].U,e=3.A[0].W,f=3.24;6 b.R("[F-S="+e+"]").1i(f),c.Y(f),c.E(),3.1K.H(3.1k(a).H()),3.U=d,3.W=a,3.1G(),!0},1G:4(){3.A[0].10||(3.A[0].W=3.W,3.A[0].U=3.U,3.A.3Q("1G"))},1L:4(){3.A[0].10||(3.1j&&3.1j.15?3.Q():3.P())},E:4(){3.A[0].10||3.G.Y(3.1Z)},X:4(){3.A[0].10||3.G.1i(3.1Z)},O:4(){3.Q(),3.G.O()},1k:4(a){6 a=2s 0===a?3.A[0].W:a,3.A.R("S").3R(a)},1r:4(a,b){6 a.3S(/{{(.*?)}}/g,4(a,c){6 b[c]})},2N:4(){5 b="",c=3,d=3.A,e=d.F(),f=0,g=4(d){d.28(4(){5 d=a(3),g=3.1p?c.24:3.10?c.2H:"";b+=c.1r(c.2A,a.18({U:d.3U(),1E:d.H(),1O:f,2D:g},d.F(),e)),f++})};6 d.R("1W").1n?d.R("1W").28(4(d){b+=c.1r(c.2x,a.18({1O:d,1U:3.1U},a(3).F(),e)),g(a(3).R("S"))}):g(d.R("S")),3.1r(3.2u,{21:b})},1I:4(a){5 b=0,c=3.A[0].1n-1,d=3.A[0].W+a;d>=b&&c>=d&&(3.1p(d)||3.1I(a+a))},1u:4(a){3.A[0].1n,3.A[0].W;5 d;3W(a.3X){1b 8:d=!0;23;1b 9:1b 27:1b 13:3.Q(),d=!0;23;1b 38:3.1I(-1),d=!0;23;1b 40:3.1I(1),d=!0}d&&a.1N()}}),4(b,c){"A"===b.29?1J f(b,c):a(b).28(4(){1J f(3,c)})}}(3y);',62,250,'|||this|function|var|return||||||||||||||||||||||||||||||select|ui|__popup|selectbox|focus|data|_selectbox|html|css|left|on|top|width|height|remove|show|close|find|option|if|value|zIndex|selectedIndex|blur|addClass|__backdrop|disabled|__dispatchEvent|px||document|open|auto|window|extend|modal|popup|case|_dropdown|fixed|div|offset|outerWidth|class|removeClass|_popup|_getOption|in|position|length|current|selected|destroyed|_tpl|prototype|style|_globalKeydown|minWidth|tabindex|follow|outerHeight|none|__getEventListener|node|null|attr|textContent|reset|change|absolute|_go|new|_value|click|delete|preventDefault|index|__center|backdrop|__focus|__zIndex|opacity|label|autofocus|optgroup|openClass|backdropOpacity|focusClass|scrollLeft|options|scrollTop|break|selectedClass|__getActive|hidden||each|type|Math|max|__clearFollow|for|resize|parentNode|__offset|parseInt|activeElement|catch|try|__listener|__follow|off|__unlock|__followSkin|100|hide|void|arguments|dropdownHtml|dl|showModal|optgroupHtml|dt|__lock|optionHtml|dd|__ready|className|role|__activeElement|backdropBackground|disabledClass|returnValue|showDropdown|selectboxHtml|oncreate|body|_dropdownHtml|appendTo|keydown|background|right|bottom|__onresize|multiple|pageX|pageY|target|ownerDocument|defaultView|parentWindow|frameElement|contentDocument|overflow|outline|userSelect|animate|150||1024|noop|beforeremove|border|hidefocus|true|user|onselectstart|false|aria|inner|icon|proxy|alertdialog|dropdown|menu|dialog|display|transparent|mousedown|382|1e3|touchstart|lineHeight|000|jQuery|iframe|test|nodeName|addEventListener|9999px|createTouch|push|removeEventListener|margin|splice|onshow|apply|onremove|children|overflowY|overflowX|maxHeight|triggerHandler|eq|replace|call|val|padding|switch|keyCode|after|is||contains'.split('|'),0,{}))
+	</script>
+</head>
+<body>
+<pre>
+/**
+ * select 修饰器(演示版)
+ * 用途：解决 select 无法自定义样式或者选项不支持图片的问题。
+ * 请注意：相对原生的 select，模拟的下拉菜单会降低可用性以及丧失大量可编程接口，并且带来的价值不高。
+ * 遇到需要自定义 select 的需求，请尽量搞定视觉设计师、拉拢交互设计师、并且与PM达成共识。
+ * 最后如果大家仍然坚持装饰 select，请相信这是你见过的世界上最没啥用、但最有追求的控件，没有之一。
+ * select 的逻辑。
+ * 已经模拟的部分：
+ * 		用户操作产生的数据可同步到原生 select 控件，不会破坏表单特性
+ *		操作可触发原生 select 的 onchange 事件
+ *		iPhone 、iPad 点击能显示滚轮
+ *		盲人的读屏器操作支持
+ *		快捷键支持
+ *		自适应位置
+ *		label 标签 for 行为支持
+ *		自动 zIndex 值
+ *		disabled 属性
+ *		optgroup 选项分组
+ *		点击页面任意空白区域自动关闭（包括 iframe）
+
+ * 不支持的部分：
+ *		原生 select 控件的 DOM 操作无法同步到模拟控件
+ *		multiple 属性
+ *		其他未列举的特性…
+ * 支持自定义样式与结构：<select id="test-setting" style="width: 4.5em" onchange="document.getElementById('test-setting-value').innerHTML=this.value">
+			<optgroup label="常用">
+				<option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif">微笑</option>
+				<option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif">瘪嘴</option>
+				<option value="e102" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e102.gif">发情</option>
+				<option value="e103" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e103.gif">惊讶</option>
+				<option value="e104" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e104.gif">得意</option>
+				<option value="e105" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e105.gif">哭泣</option>
+			</optgroup>
+			<optgroup label="爱情">
+				<option value="e163" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e163.gif">玫瑰</option>
+				<option value="e164" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e164.gif">凋谢</option>
+				<option disabled value="e165" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e165.gif">亲吻(黄钻用户专享)</option>
+			</optgroup>
+		</select> <label for="test-setting"><button id="start-setting">转换为包含图片的下拉框</button></label> <span id="test-setting-value"></span>
+ */
+</pre>
+<div id="header">
+	<button id="start">开始</button>
+</div>
+
+<table id="test" style="width:100%; height:100%">
+	<tr>
+		<td style="text-align: left; vertical-align: top;">
+			<label for="test-select">支持label标签：</label>
+			<select id="test-select">
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">&#60;s&#62;选项三&#60;/s&#62;</option>
+				<option value="4"><s>选项四</s></option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: center; vertical-align: top;">
+			<label>label2
+				<select>
+					<option value="0">---请选择---</option>
+					<option value="1">选项二</option>
+					<option selected value="2">选项二</option>
+					<option value="3">选项三</option>
+					<option value="4">选项四</option>
+					<option value="5">选项五</option>
+				</select>
+			</label>
+		</td>
+		<td style="text-align: right; vertical-align: top;">
+			<label for="test-select-disabled">不可用下拉：</label>
+			<select disabled id="test-select-disabled">
+				<option selected value="0">disabled</option>
+				<option value="1">选项二</option>
+				<option value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align: left; vertical-align: middle;">
+			<label for="test-option-disabled">不可用选项：</label>
+			<select id="test-option-disabled">
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">selected</option>
+				<option value="3">选项三</option>
+				<option disabled value="4">disabled</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: center; vertical-align: middle;">
+			<label for="test-optgroup">选项分组：</label>
+			<select id="test-optgroup">
+				<optgroup label="我是A组">
+					<option value="0">选项零</option>
+					<option value="1">选项二</option>
+					<option value="2">选项二</option>
+					<option value="3">选项三</option>
+					<option value="4">选项四</option>
+					<option value="5">选项五</option>
+				</optgroup>
+				<optgroup label="我是B组">
+					<option value ="mercedes">Mercedes</option>
+					<option value ="audi">Audi</option>
+				</optgroup>
+			</select>
+		</td>
+		<td style="text-align: right; vertical-align: middle;">
+			<label for="test-onchange">onchange 事件支持：</label>
+			<select id="test-onchange" onchange="location.href=this.value">
+				<option value="javascript:;">友情链接</option>
+				<option value="https://github.com">Github</option>
+				<option value="http://google.com">Google</option>
+				<option value="http://qq.com">腾讯</option>
+				<option value="http://baidu.com">百度</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align: left; vertical-align: bottom;">
+			<select>
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: center; vertical-align: bottom;">
+			<select>
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: right; vertical-align: bottom;">
+			<select>
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+	</tr>
+</table>
+
+
+
+
+<script>
+$('#start').one('click', function () {
+	$('#test select').each(function () {
+		selectbox(this);
+	});
+
+	$(this).css('opacity', .5);
+	this.disabled = true;
+});
+
+$('#start-setting').one('click', function () {
+	selectbox($('#test-setting'), {
+		selectboxHtml:
+		  '<div class="ui-selectbox" hidefocus="true" tabindex="-1" aria-hidden>'
+		+     '<div class="ui-selectbox-inner" data-value="">{{textContent}}</div>'
+		+     '<i class="ui-selectbox-icon"></i>'
+		+ '</div>',
+		dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu">{{options}}</dl>',
+		optgroupHtml:  '<dt class="ui-selectbox-optgroup">{{label}}</dt>',
+		optionHtml:    '<dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1"><img src="{{icon}}" alt="icon" style="width:16px;height:16px;vertical-align:middle" /> {{textContent}}</dd>',
+		selectedClass: 'ui-selectbox-selected',
+		disabledClass: 'ui-selectbox-disabled',
+		focusClass:    'ui-selectbox-focus',
+		openClass:     'ui-selectbox-open'
+	});
+	this.disabled = true;
+});
+</script>
+</body>
+</html>

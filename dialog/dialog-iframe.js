@@ -8,6 +8,7 @@ return $.extend(function (options) {
 	options = options || {};
 	var url = options.url;
 	var oniframeload = options.oniframeload;
+
 	options.padding = 0;
 
 	var api = dialog(options);

@@ -7,18 +7,13 @@ var dialog = require('../drag/dialog')
 var start = drag.types.start;
 
 Popup.oncreate = function (api) {
-	function bind (event) {
+	$(api.node).on(start, '[i=title]', function (event) {
 		if (!api.follow) {
-			drag.create($(api.node), event);
+			drag.create(api.node, event);
 		}
-	};
-
-	$(api.node).on(start, '[i=title]', bind);
-	api.addEventListener('remove', bind, false);
+	});
 };
 
 return dialog;
 
 });
-
-

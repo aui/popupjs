@@ -40,23 +40,24 @@
 <pre>
 /**
  * select 修饰器
- * 用途：解决 select 无法自定义样式问题。
+ * 用途：解决 select 无法自定义样式或者选项不支持图片的问题。
  * 请注意：相对原生的 select，模拟的下拉菜单会降低可用性以及丧失大量可编程接口，并且带来的价值不高。
  * 遇到需要自定义 select 的需求，请尽量搞定视觉设计师、拉拢交互设计师、并且与PM达成共识。
- * 最后如果大家仍然坚持装饰 select，请相信这是你见过的世界上最负责的控件，没有之一，作者并不希望你
- * 将精力耗费在无意义的劳动上面，你可以随时用它制作自定义 select；亦可随时取消它而不用担心它干扰
+ * 最后如果大家仍然坚持装饰 select，请相信这是你见过的世界上最没啥用、但最有追求的控件，没有之一。作者并不希望你
+ * 将精力耗费在无意义的劳动上面，你可以随时用它制作自定义 select；亦可随时取消它而不用改变业务逻辑。
  * select 的逻辑。
  * 已经模拟的部分：
  * 		用户操作产生的数据可同步到原生 select 控件，不会破坏表单特性
  *		操作可触发原生 select 的 onchange 事件
  *		iPhone 、iPad 点击能显示滚轮
- *		键盘操作
- *		读屏器支持
+ *		盲人的读屏器操作支持
+ *		快捷键支持
  *		自适应位置
  *		label 标签 for 行为支持
  *		自动 zIndex 值
  *		disabled 属性
  *		optgroup 选项分组
+ *		点击页面任意空白区域自动关闭（包括 iframe）
 
  * 不支持的部分：
  *		原生 select 控件的 DOM 操作无法同步到模拟控件
@@ -64,18 +65,18 @@
  *		其他未列举的特性…
  * 支持自定义样式与结构：<select id="test-setting" style="width: 4.5em" onchange="document.getElementById('test-setting-value').innerHTML=this.value">
 			<optgroup label="常用">
-		        <option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif">微笑</option>
-		        <option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif">瘪嘴</option>
-		        <option value="e102" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e102.gif">发情</option>
-		        <option value="e103" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e103.gif">惊讶</option>
-		        <option value="e104" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e104.gif">得意</option>
-		        <option value="e105" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e105.gif">哭泣</option>
+				<option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif">微笑</option>
+				<option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif">瘪嘴</option>
+				<option value="e102" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e102.gif">发情</option>
+				<option value="e103" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e103.gif">惊讶</option>
+				<option value="e104" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e104.gif">得意</option>
+				<option value="e105" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e105.gif">哭泣</option>
 			</optgroup>
-		    <optgroup label="爱情">
-		    	<option value="e163" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e163.gif">玫瑰</option>
-		    	<option value="e164" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e164.gif">凋谢</option>
-		    	<option disabled value="e165" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e165.gif">亲吻(黄钻用户专享)</option>
-		    </optgroup>
+			<optgroup label="爱情">
+				<option value="e163" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e163.gif">玫瑰</option>
+				<option value="e164" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e164.gif">凋谢</option>
+				<option disabled value="e165" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e165.gif">亲吻(黄钻用户专享)</option>
+			</optgroup>
 		</select> <label for="test-setting"><button id="start-setting">转换为包含图片的下拉框</button></label> <span id="test-setting-value"></span>
  */
 </pre>
@@ -84,114 +85,114 @@
 </div>
 
 <table id="test" style="width:100%; height:100%">
-    <tr>
-        <td style="text-align: left; vertical-align: top;">
-        	<label for="test-select">支持label标签：</label>
-            <select id="test-select">
-                <option value="0">---请选择---</option>
-                <option value="1">选项二</option>
-                <option selected value="2">选项二</option>
-                <option value="3">&#60;s&#62;选项三&#60;/s&#62;</option>
-                <option value="4"><s>选项四</s></option>
-                <option value="5">选项五</option>
-            </select>
-        </td>
-        <td style="text-align: center; vertical-align: top;">
-            <label>label2
-                <select>
-                    <option value="0">---请选择---</option>
-                    <option value="1">选项二</option>
-                    <option selected value="2">选项二</option>
-                    <option value="3">选项三</option>
-                    <option value="4">选项四</option>
-                    <option value="5">选项五</option>
-                </select>
-            </label>
-        </td>
-        <td style="text-align: right; vertical-align: top;">
-        	<label for="test-select-disabled">不可用下拉：</label>
-            <select disabled id="test-select-disabled">
-                <option selected value="0">disabled</option>
-                <option value="1">选项二</option>
-                <option value="2">选项二</option>
-                <option value="3">选项三</option>
-                <option value="4">选项四</option>
-                <option value="5">选项五</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align: left; vertical-align: middle;">
-        	<label for="test-option-disabled">不可用选项：</label>
-            <select id="test-option-disabled">
-                <option value="0">---请选择---</option>
-                <option value="1">选项二</option>
-                <option selected value="2">selected</option>
-                <option value="3">选项三</option>
-                <option disabled value="4">disabled</option>
-                <option value="5">选项五</option>
-            </select>
-        </td>
-        <td style="text-align: center; vertical-align: middle;">
-        	<label for="test-optgroup">选项分组：</label>
-            <select id="test-optgroup">
-  				<optgroup label="我是A组">
-	                <option value="0">选项零</option>
-	                <option value="1">选项二</option>
-	                <option value="2">选项二</option>
-	                <option value="3">选项三</option>
-	                <option value="4">选项四</option>
-	                <option value="5">选项五</option>
+	<tr>
+		<td style="text-align: left; vertical-align: top;">
+			<label for="test-select">支持label标签：</label>
+			<select id="test-select">
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">&#60;s&#62;选项三&#60;/s&#62;</option>
+				<option value="4"><s>选项四</s></option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: center; vertical-align: top;">
+			<label>label2
+				<select>
+					<option value="0">---请选择---</option>
+					<option value="1">选项二</option>
+					<option selected value="2">选项二</option>
+					<option value="3">选项三</option>
+					<option value="4">选项四</option>
+					<option value="5">选项五</option>
+				</select>
+			</label>
+		</td>
+		<td style="text-align: right; vertical-align: top;">
+			<label for="test-select-disabled">不可用下拉：</label>
+			<select disabled id="test-select-disabled">
+				<option selected value="0">disabled</option>
+				<option value="1">选项二</option>
+				<option value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align: left; vertical-align: middle;">
+			<label for="test-option-disabled">不可用选项：</label>
+			<select id="test-option-disabled">
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">selected</option>
+				<option value="3">选项三</option>
+				<option disabled value="4">disabled</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: center; vertical-align: middle;">
+			<label for="test-optgroup">选项分组：</label>
+			<select id="test-optgroup">
+				<optgroup label="我是A组">
+					<option value="0">选项零</option>
+					<option value="1">选项二</option>
+					<option value="2">选项二</option>
+					<option value="3">选项三</option>
+					<option value="4">选项四</option>
+					<option value="5">选项五</option>
 				</optgroup>
-			    <optgroup label="我是B组">
-			    	<option value ="mercedes">Mercedes</option>
-			    	<option value ="audi">Audi</option>
-			    </optgroup>
-            </select>
-        </td>
-        <td style="text-align: right; vertical-align: middle;">
-        	<label for="test-onchange">onchange 事件支持：</label>
-            <select id="test-onchange" onchange="location.href=this.value">
-            	<option value="javascript:;">友情链接</option>
-            	<option value="https://github.com">Github</option>
-                <option value="http://google.com">Google</option>
-                <option value="http://qq.com">腾讯</option>
-                <option value="http://baidu.com">百度</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align: left; vertical-align: bottom;">
-            <select>
-                <option value="0">---请选择---</option>
-                <option value="1">选项二</option>
-                <option selected value="2">选项二</option>
-                <option value="3">选项三</option>
-                <option value="4">选项四</option>
-                <option value="5">选项五</option>
-            </select>
-        </td>
-        <td style="text-align: center; vertical-align: bottom;">
-            <select>
-                <option value="0">---请选择---</option>
-                <option value="1">选项二</option>
-                <option selected value="2">选项二</option>
-                <option value="3">选项三</option>
-                <option value="4">选项四</option>
-                <option value="5">选项五</option>
-            </select>
-        </td>
-        <td style="text-align: right; vertical-align: bottom;">
-            <select>
-                <option value="0">---请选择---</option>
-                <option value="1">选项二</option>
-                <option selected value="2">选项二</option>
-                <option value="3">选项三</option>
-                <option value="4">选项四</option>
-                <option value="5">选项五</option>
-            </select>
-        </td>
-    </tr>
+				<optgroup label="我是B组">
+					<option value ="mercedes">Mercedes</option>
+					<option value ="audi">Audi</option>
+				</optgroup>
+			</select>
+		</td>
+		<td style="text-align: right; vertical-align: middle;">
+			<label for="test-onchange">onchange 事件支持：</label>
+			<select id="test-onchange" onchange="location.href=this.value">
+				<option value="javascript:;">友情链接</option>
+				<option value="https://github.com">Github</option>
+				<option value="http://google.com">Google</option>
+				<option value="http://qq.com">腾讯</option>
+				<option value="http://baidu.com">百度</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align: left; vertical-align: bottom;">
+			<select>
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: center; vertical-align: bottom;">
+			<select>
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+		<td style="text-align: right; vertical-align: bottom;">
+			<select>
+				<option value="0">---请选择---</option>
+				<option value="1">选项二</option>
+				<option selected value="2">选项二</option>
+				<option value="3">选项三</option>
+				<option value="4">选项四</option>
+				<option value="5">选项五</option>
+			</select>
+		</td>
+	</tr>
 </table>
 
 
@@ -217,7 +218,7 @@ seajs.use(['jquery', '../selectbox'], function ($, select) {
 			+     '<div class="ui-selectbox-inner" data-value="">{{textContent}}</div>'
 			+     '<i class="ui-selectbox-icon"></i>'
 			+ '</div>',
-			dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu" aria-labelledby="dLabel">{{options}}</dl>',
+			dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu">{{options}}</dl>',
 			optgroupHtml:  '<dt class="ui-selectbox-optgroup">{{label}}</dt>',
 			optionHtml:    '<dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1"><img src="{{icon}}" alt="icon" style="width:16px;height:16px;vertical-align:middle" /> {{textContent}}</dd>',
 			selectedClass: 'ui-selectbox-selected',

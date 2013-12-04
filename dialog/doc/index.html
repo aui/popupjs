@@ -301,18 +301,22 @@ pre {
 
 <hr />
 
+<p>artDialog —— 经典的网页对话框组件，内外皆用心雕琢。</p>
+
 <ol>
 <li>支持普通与气泡形式的对话框</li>
 <li>信息无障碍支持：焦点管理；支持 ARIA 标准</li>
-<li>面向未来：基于 HTML5 Dialog 的 Api</li>
+<li>面向未来：基于 HTML5 Dialog 的 API</li>
 <li>支持标准与模态对话框</li>
 <li>丰富的展示状态与友好的编程接口</li>
+<li>自适应内容尺寸</li>
 </ol>
 
 
-<h2>目录</h2>
+<h2>文档导航</h2>
 
 <ul>
+<li><a href="#module">引入 artDialog</a></li>
 <li><a href="#quickref">快速参考</a>
 
 <ul>
@@ -352,28 +356,59 @@ pre {
 <li><a href="#option">选项</a>
 
 <ul>
+<li>内容
+
+<ul>
 <li><a href="#option-title">title</a></li>
 <li><a href="#option-content">content</a></li>
+<li><a href="#option-statusbar">statusbar</a></li>
+</ul>
+</li>
+<li>按钮
+
+<ul>
 <li><a href="#option-ok">ok</a></li>
-<li><a href="#option-cancel">cancel</a></li>
 <li><a href="#option-okValue">okValue</a></li>
+<li><a href="#option-cancel">cancel</a></li>
 <li><a href="#option-cancelValue">cancelValue</a></li>
 <li><a href="#option-button">button</a></li>
+</ul>
+</li>
+<li>外观
+
+<ul>
 <li><a href="#option-width">width</a></li>
 <li><a href="#option-height">height</a></li>
-<li><a href="#option-quickClose">quickClose</a></li>
-<li><a href="#option-fixed">fixed</a></li>
 <li><a href="#option-skin">skin</a></li>
 <li><a href="#option-padding">padding</a></li>
-<li><a href="#option-id">id</a></li>
+</ul>
+</li>
+<li>交互
+
+<ul>
+<li><a href="#option-fixed">fixed</a></li>
+<li><a href="#option-quickClose">quickClose</a></li>
 <li><a href="#option-zIndex">zIndex</a></li>
-<li><a href="#option-statusbar">statusbar</a></li>
+</ul>
+</li>
+<li>事件
+
+<ul>
 <li><a href="#option-onshow">onshow</a></li>
+<li><a href="#option-onbeforeremove">onbeforeremove</a></li>
 <li><a href="#option-onremove">onremove</a></li>
 <li><a href="#option-onclose">onclose</a></li>
 <li><a href="#option-onfocus">onfocus</a></li>
 <li><a href="#option-onblur">onblur</a></li>
 <li><a href="#option-onreset">onreset</a></li>
+</ul>
+</li>
+<li>高级
+
+<ul>
+<li><a href="#option-id">id</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#property">属性</a>
@@ -385,6 +420,20 @@ pre {
 </li>
 </ul>
 
+
+<h2><span id="module">引入 artDialog</span></h2>
+
+<p>在模块中引入 artDialog（支持 RequireJS 与 SeaJS）：</p>
+
+<pre><code>var dialog = require('popup/dialog/dialog');
+//..
+</code></pre>
+
+<p><a href="../test/show.html">seajs加载示例</a></p>
+
+<h3>依赖模块</h3>
+
+<p>jquery</p>
 
 <h2><span id="quickref">快速参考</span></h2>
 
@@ -465,7 +514,7 @@ d.show();
 
 <pre><code>var d = dialog({
     title: '欢迎',
-    content: '欢迎使用 qz-dialog 对话框组件！',
+    content: '欢迎使用 artDialog 对话框组件！',
     skin: 'ui-dialog-s',
     padding: '25px 15px',
     ok: function () {
@@ -501,21 +550,26 @@ d.show();
 
 <pre><code>//..
 window.openDialog = function (options) {
-    var options = arguments[0];
+    // 页面地址
     var url = options.url;
-    //var oniframeload = options.oniframeload;
-    var loader = window.require ? require : seajs.use;
-    // 请设置实际项目路径
-    loader([
-        'dialog/dialog',
-        'dialog/dialog-iframe'
+    // 是否为模态，默认 true
+    var modal = options.modal;
+    // 是否使用气泡样式跟随到元素
+    var follow = options.follow;
+    // 页面加载完毕的事件
+    var oniframeload = options.oniframeload;
+    (window.require ? require : seajs.use)([
+        '../dialog',
+        '../dialog-iframe'
     ], function (dialog, openIframe) {
         var api = url ? openIframe(options) : dialog(options);
-        api.showModal();
+        api[modal === false ? 'show' : 'showModal'](follow);
         window.__dialog__ = dialog;
     });
 };
 </code></pre>
+
+<blockquote><p>  小提示：比普通对话框的<a href="#option">选项</a>多了<code>url</code>、<code>modal</code>、<code>follow</code>、<code>oniframeload</code>这几个字段。</p></blockquote>
 
 <p>然后在顶层页面创建一个获取对话框 api 的方法，例如：</p>
 
@@ -532,7 +586,7 @@ window.getDialog = function (win) {
         var api;
         for (var i in list) {
             api = list[i];
-            if (jQuery.contains(api.node, iframe)) {
+            if (api.node.getElementsByTagName('iframe')[0] === iframe) {
                 return api;
             }
         }
@@ -584,7 +638,7 @@ dialog.close().remove();
 <p>默认居中显示，支持传入元素节点或者事件对象。</p>
 
 <ul>
-<li>参数类型为<code>HTMLElement</code>：点可吸附到元素上，同时对话框将呈现气泡样式。</li>
+<li>参数类型为<code>HTMLElement</code>：可吸附到元素上，同时对话框将呈现气泡样式。</li>
 <li>参数类型为<code>Event Object</code>：根据<code>event.pageX</code>与<code>event.pageY</code>定位。</li>
 </ul>
 
@@ -706,7 +760,7 @@ d.show();
 
 <p>添加事件。</p>
 
-<p>支持的事件有：<code>close</code>、<code>remove</code>、<code>reset</code>、<code>focus</code>、<code>blur</code></p>
+<p>支持的事件有：<code>show</code>、<code>close</code>、<code>beforeremove</code>、<code>remove</code>、<code>reset</code>、<code>focus</code>、<code>blur</code></p>
 
 <h3><span id="api-removeEventListener">removeEventListener(type, callback)</span></h3>
 
@@ -725,21 +779,6 @@ d.show();
 <p><strong>注意</strong>：这是一个静态方法。</p>
 
 <h2>配置参数</h2>
-
-<h3><span id="option-title">title</span></h3>
-
-<p>标题内容。</p>
-
-<h4>类型</h4>
-
-<p>String</p>
-
-<h4>示例</h4>
-
-<pre><code>dialog({
-    title: 'hello world!'
-}).show();
-</code></pre>
 
 <h3><span id="option-content">content</span></h3>
 
@@ -767,6 +806,42 @@ dialog({
 }).show();
 </code></pre>
 
+<h3><span id="option-title">title</span></h3>
+
+<p>标题内容。</p>
+
+<h4>类型</h4>
+
+<p>String</p>
+
+<h4>示例</h4>
+
+<pre><code>dialog({
+    title: 'hello world!'
+}).show();
+</code></pre>
+
+<h3><span id="option-statusbar">statusbar</span></h3>
+
+<p>状态栏区域 HTML 代码。</p>
+
+<p>可以实现类似“不再提示”的复选框。<strong>注意</strong>：必须有按钮才会显示。</p>
+
+<h4>类型</h4>
+
+<p>String</p>
+
+<h4>示例</h4>
+
+<pre><code>var d = dialog({
+    title: '欢迎',
+    content: '欢迎使用 artDialog 对话框组件！',
+    ok: function () {},
+    statusbar: '&lt;label&gt;&lt;input type="checkbox"&gt;不再提醒&lt;/label&gt;'
+});
+d.show();
+</code></pre>
+
 <h3><span id="option-ok">ok</span></h3>
 
 <p>确定按钮。</p>
@@ -785,6 +860,25 @@ dialog({
         .title('消息')
         .content('hello world!')
         .width(130);
+        return false;
+    }
+}).show();
+</code></pre>
+
+<h3><span id="option-okValue">okValue</span></h3>
+
+<p>(默认值: "ok")  确定按钮文本。</p>
+
+<h4>类型</h4>
+
+<p>String</p>
+
+<h4>示例</h4>
+
+<pre><code>dialog({
+    okValue: '猛击我',
+    ok: function () {
+        this.content('hello world!');
         return false;
     }
 }).show();
@@ -819,25 +913,6 @@ dialog({
 }).show();
 </code></pre>
 
-<h3><span id="option-okValue">okValue</span></h3>
-
-<p>(默认值: "ok")  确定按钮文本。</p>
-
-<h4>类型</h4>
-
-<p>String</p>
-
-<h4>示例</h4>
-
-<pre><code>dialog({
-    okValue: '猛击我',
-    ok: function () {
-        this.content('hello world!');
-        return false;
-    }
-}).show();
-</code></pre>
-
 <h3><span id="option-cancelValue">cancelValue</span></h3>
 
 <p>(默认值: cancel) 取消按钮文本。</p>
@@ -859,8 +934,6 @@ dialog({
 <h3><span id="option-button">button</span></h3>
 
 <p>自定义按钮组。</p>
-
-<p>回调函数<code>this</code>指向<code>dialog</code>对象，执行完毕默认关闭对话框，若返回<code>false</code>则阻止关闭。</p>
 
 <h4>类型</h4>
 
@@ -885,7 +958,7 @@ dialog({
 <tr>
 <td>callback </td>
 <td> Function </td>
-<td> (可选) 按钮点击后的回调函数。回调函数<code>this</code>指向<code>dialog</code>对象，执行完毕默认关闭对话框，若返回<code>false</code>则阻止关闭</td>
+<td> (可选) 回调函数<code>this</code>指向<code>dialog</code>对象，执行完毕默认关闭与销毁对话框（依次执行<code>close()</code>与<code>remove()</code>），若返回<code>false</code>则阻止关闭与销毁</td>
 </tr>
 <tr>
 <td>autofocus </td>
@@ -982,35 +1055,6 @@ dialog({
 }).show();
 </code></pre>
 
-<h3><span id="option-quickClose">quickClose</span></h3>
-
-<p>(默认值: false) 是否点击空白出快速关闭。</p>
-
-<pre><code>var d = dialog({
-    content: '点击空白处快速关闭',
-    quickClose: true
-});
-d.show(document.getElementById('option-quickClose'));
-</code></pre>
-
-<h3><span id="option-fiexed">fixed</span></h3>
-
-<p>(默认值: false) 开启固定定位。</p>
-
-<p>固定定位是 css2.1 <code>position</code>的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与 部分移动浏览器对其支持不好，内部会转成绝对定位。</p>
-
-<h4>类型</h4>
-
-<p>Boolean</p>
-
-<h4>示例</h4>
-
-<pre><code>dialog({
-    fixed: true,
-    content: '请拖动滚动条查看'
-}).show();
-</code></pre>
-
 <h3><span id="option-skin">skin</span></h3>
 
 <p>设置对话框额外的<code>className</code>参数。</p>
@@ -1045,27 +1089,33 @@ dialog({
 }).show();
 </code></pre>
 
-<h3><span id="option-id">id</span></h3>
+<h3><span id="option-fixed">fixed</span></h3>
 
-<p>设定对话框唯一标识。</p>
+<p>(默认值: false) 开启固定定位。</p>
 
-<ol>
-<li>可防止重复 ID 对话框弹出。</li>
-<li>支持使用<code>dialog.get(id)</code>获取某个对话框的接口。</li>
-</ol>
-
+<p>固定定位是 css2.1 <code>position</code>的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与 部分移动浏览器对其支持不好，内部会转成绝对定位。</p>
 
 <h4>类型</h4>
 
-<p>String</p>
+<p>Boolean</p>
 
 <h4>示例</h4>
 
 <pre><code>dialog({
-    id: 'id-demo',
-    content: '再次点击运行看看'
+    fixed: true,
+    content: '请拖动滚动条查看'
 }).show();
-dialog.get('id-demo').title('8888888888');
+</code></pre>
+
+<h3><span id="option-quickClose">quickClose</span></h3>
+
+<p>(默认值: false) 是否点击空白出快速关闭。</p>
+
+<pre><code>var d = dialog({
+    content: '点击空白处快速关闭',
+    quickClose: true
+});
+d.show(document.getElementById('option-quickClose'));
 </code></pre>
 
 <h3><span id="option-zIndex">zIndex</span></h3>
@@ -1085,27 +1135,6 @@ dialog.get('id-demo').title('8888888888');
 <pre><code>dialog({
     zIndex: 87
 }).show();
-</code></pre>
-
-<h3><span id="option-statusbar">statusbar</span></h3>
-
-<p>状态栏区域 HTML 代码。</p>
-
-<p>可以实现类似“不再提示”的复选框。<strong>注意</strong>：必须有按钮才会显示。</p>
-
-<h4>类型</h4>
-
-<p>String</p>
-
-<h4>示例</h4>
-
-<pre><code>var d = dialog({
-    title: '欢迎',
-    content: '欢迎使用 artDialog 对话框组件！',
-    ok: function () {},
-    statusbar: '&lt;label&gt;&lt;input type="checkbox"&gt;不再提醒&lt;/label&gt;'
-});
-d.show();
 </code></pre>
 
 <h3><span id="option-onshow">onshow</span></h3>
@@ -1142,6 +1171,12 @@ d.show();
 d.show();
 </code></pre>
 
+<h3><span id="option-onbeforeremove">onbeforeremove</span></h3>
+
+<p>对话框销毁之前事件。</p>
+
+<p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
+
 <h3><span id="option-onremove">onremove</span></h3>
 
 <p>对话框销毁事件。</p>
@@ -1168,7 +1203,7 @@ d.show();
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
 
-<h3><span id="option-onblue">onblur</span></h3>
+<h3><span id="option-onblur">onblur</span></h3>
 
 <p>对话框失去焦点事件。</p>
 
@@ -1179,6 +1214,29 @@ d.show();
 <p>对话框位置重置事件。</p>
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
+
+<h3><span id="option-id">id</span></h3>
+
+<p>设定对话框唯一标识。</p>
+
+<ol>
+<li>可防止重复 ID 对话框弹出。</li>
+<li>支持使用<code>dialog.get(id)</code>获取某个对话框的接口。</li>
+</ol>
+
+
+<h4>类型</h4>
+
+<p>String</p>
+
+<h4>示例</h4>
+
+<pre><code>dialog({
+    id: 'id-demo',
+    content: '再次点击运行看看'
+}).show();
+dialog.get('id-demo').title('8888888888');
+</code></pre>
 
 <h2><span id="property">属性</span></h2>
 

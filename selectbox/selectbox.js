@@ -24,7 +24,7 @@
  */
 define(function (require) {
 
-var $ = require('jquery') || jQuery;
+var $ = require('jquery');
 var Popup = require('../popup');
 var css = './css/ui-selectbox.css';
 
@@ -119,7 +119,7 @@ $.extend(Select.prototype, {
 	+     '<i class="ui-selectbox-icon"></i>'
 	+ '</div>',
 	
-	dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu" aria-labelledby="dLabel">{{options}}</dl>',
+	dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu">{{options}}</dl>',
 	optgroupHtml:  '<dt class="ui-selectbox-optgroup">{{label}}</dt>',
 	optionHtml:    '<dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1">{{textContent}}</dd>',
 	selectedClass: 'ui-selectbox-selected',
@@ -165,27 +165,13 @@ $.extend(Select.prototype, {
 
 
 		popup.onshow = function () {
-
-			// 延迟绑定，避免 document 收到 that._selectbox 的 click 事件
-			// 虽然可以阻止 that._selectbox 的 click 冒泡解决，但是会存在以前打开的下拉框无法关闭
-			setTimeout(function () {
-				$(document)
-				// 任意点击都关闭下拉框
-				//.on('click', that._globalClick)
-
-				// 键盘操作
-				.on('keydown', that._globalKeydown);
-			}, 0);
-
-
+			$(document).on('keydown', that._globalKeydown);
+			that._selectbox.addClass(that.openClass);
 		};
 
 
 		popup.onremove = function () {
-			$(document)
-			//.off('click', that._globalClick)
-			.off('keydown', that._globalKeydown);
-
+			$(document).off('keydown', that._globalKeydown);
 			that._selectbox.removeClass(that.openClass);
 		};
 
@@ -211,10 +197,6 @@ $.extend(Select.prototype, {
 			overflowX: 'hidden',
 			maxHeight: $(window).height() - select.outerHeight()
 		});
-
-
-
-		that._selectbox.addClass(that.openClass);
 	},
 
 
@@ -366,17 +348,9 @@ $.extend(Select.prototype, {
 	},
 
 
-	// 全局点击监听
-	//_globalClick: function (event) {
-	//	this._popup.remove();
-	//},
-
-
 	// 全局键盘监听
 	_globalKeydown: function (event) {
 
-		var length = this.select[0].length;
-		var index = this.select[0].selectedIndex;
 		var p;
 
         switch (event.keyCode) {

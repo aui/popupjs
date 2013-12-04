@@ -1,15 +1,18 @@
 #	artDialog``v6``
 ============================
 
+artDialog —— 经典的网页对话框组件，内外皆用心雕琢。
 
 1.	支持普通与气泡形式的对话框
 2.	信息无障碍支持：焦点管理；支持 ARIA 标准
-3.	面向未来：基于 HTML5 Dialog 的 Api
+3.	面向未来：基于 HTML5 Dialog 的 API
 4.	支持标准与模态对话框
-5.	丰富的展示状态与友好的编程接口
+5.	丰富的展示状态与友好的编程接口	
+6.	自适应内容尺寸
 
-##	目录
+##	文档导航
 
+*	[引入 artDialog](#module)
 *	[快速参考](#quickref)
 	*	[普通对话框](#quickref-basic)
 	*	[模态对话框](#quickref-modal)
@@ -39,31 +42,52 @@
 	*	[dialog.get(id)](#api-dialog-get)
 	*	[dialog.getCurrent()](#api-dialog-getCurrent)
 *	[选项](#option)
-	*	[title](#option-title)
-	*	[content](#option-content)
-	*	[ok](#option-ok)
-	*	[cancel](#option-cancel)
-	*	[okValue](#option-okValue)
-	*	[cancelValue](#option-cancelValue)
-	*	[button](#option-button)
-	*	[width](#option-width)
-	*	[height](#option-height)
-	*	[quickClose](#option-quickClose)
-	*	[fixed](#option-fixed)
-	*	[skin](#option-skin)
-	*	[padding](#option-padding)
-	*	[id](#option-id)
-	*	[zIndex](#option-zIndex)
-	*	[statusbar](#option-statusbar)
-	*	[onshow](#option-onshow)
-	*	[onremove](#option-onremove)
-	*	[onclose](#option-onclose)
-	*	[onfocus](#option-onfocus)
-	*	[onblur](#option-onblur)
-	*	[onreset](#option-onreset)
+	*	内容
+		*	[title](#option-title)
+		*	[content](#option-content)
+		*	[statusbar](#option-statusbar)
+	*	按钮
+		*	[ok](#option-ok)
+		*	[okValue](#option-okValue)
+		*	[cancel](#option-cancel)
+		*	[cancelValue](#option-cancelValue)
+		*	[button](#option-button)
+	*	外观
+		*	[width](#option-width)
+		*	[height](#option-height)
+		*	[skin](#option-skin)
+		*	[padding](#option-padding)
+	*	交互
+		*	[fixed](#option-fixed)
+		*	[quickClose](#option-quickClose)
+		*	[zIndex](#option-zIndex)
+	*	事件
+		*	[onshow](#option-onshow)
+		*	[onbeforeremove](#option-onbeforeremove)
+		*	[onremove](#option-onremove)
+		*	[onclose](#option-onclose)
+		*	[onfocus](#option-onfocus)
+		*	[onblur](#option-onblur)
+		*	[onreset](#option-onreset)
+	*	高级
+		*	[id](#option-id)
 *	[属性](#property)
 	*	[open](#property-open)
 	*	[returnValue](#property-returnValue)
+	
+##	[引入 artDialog](id:module)
+
+在模块中引入 artDialog（支持 RequireJS 与 SeaJS）：
+
+```
+var dialog = require('popup/dialog/dialog');
+//..
+```
+[seajs加载示例](../test/show.html)
+
+###	依赖模块
+
+jquery
 
 ##	[快速参考](id:quickref)
 
@@ -151,7 +175,7 @@ d.show();
 ```
 var d = dialog({
 	title: '欢迎',
-	content: '欢迎使用 qz-dialog 对话框组件！',
+	content: '欢迎使用 artDialog 对话框组件！',
 	skin: 'ui-dialog-s',
 	padding: '25px 15px',
 	ok: function () {
@@ -189,21 +213,26 @@ d.show();
 ```
 //..
 window.openDialog = function (options) {
-	var options = arguments[0];
+	// 页面地址
 	var url = options.url;
-	//var oniframeload = options.oniframeload;
-	var loader = window.require ? require : seajs.use;
-	// 请设置实际项目路径
-	loader([
-		'dialog/dialog',
-		'dialog/dialog-iframe'
+	// 是否为模态，默认 true
+	var modal = options.modal;
+	// 是否使用气泡样式跟随到元素
+	var follow = options.follow;
+	// 页面加载完毕的事件
+	var oniframeload = options.oniframeload;
+	(window.require ? require : seajs.use)([
+		'../dialog',
+		'../dialog-iframe'
 	], function (dialog, openIframe) {
 		var api = url ? openIframe(options) : dialog(options);
-		api.showModal();
+		api[modal === false ? 'show' : 'showModal'](follow);
 		window.__dialog__ = dialog;
 	});
 };
 ```
+
+>	小提示：比普通对话框的[选项](#option)多了``url``、``modal``、``follow``、``oniframeload``这几个字段。
 
 然后在顶层页面创建一个获取对话框 api 的方法，例如：
 
@@ -221,7 +250,7 @@ window.getDialog = function (win) {
 		var api;
 		for (var i in list) {
 			api = list[i];
-			if (jQuery.contains(api.node, iframe)) {
+			if (api.node.getElementsByTagName('iframe')[0] === iframe) {
 				return api;
 			}
 		}
@@ -274,7 +303,7 @@ dialog.close().remove();
 
 默认居中显示，支持传入元素节点或者事件对象。
 
-*	参数类型为``HTMLElement``：点可吸附到元素上，同时对话框将呈现气泡样式。
+*	参数类型为``HTMLElement``：可吸附到元素上，同时对话框将呈现气泡样式。
 *	参数类型为``Event Object``：根据``event.pageX``与``event.pageY``定位。
 
 ####	示例
@@ -348,7 +377,7 @@ d.show();
 var d = dialog();
 d.title('hello world');
 d.show();
-``` 
+```
 
 ###	[width([value])](id:api-width)
 
@@ -402,7 +431,7 @@ dialog({
 
 添加事件。
 
-支持的事件有：``close``、``remove``、``reset``、``focus``、``blur``
+支持的事件有：``show``、``close``、``beforeremove``、``remove``、``reset``、``focus``、``blur``
 
 ###	[removeEventListener(type, callback)](id:api-removeEventListener)
 
@@ -421,22 +450,6 @@ dialog({
 **注意**：这是一个静态方法。
 
 ## 配置参数
-
-###	[title](id:option-title)
-
-标题内容。
-
-####	类型
-
-String
-
-####	示例
-
-```
-dialog({
-	title: 'hello world!'
-}).show();
-```
 
 ###	[content](id:option-content)
 
@@ -465,6 +478,44 @@ dialog({
 }).show();
 ```
 
+###	[title](id:option-title)
+
+标题内容。
+
+####	类型
+
+String
+
+####	示例
+
+```
+dialog({
+	title: 'hello world!'
+}).show();
+```
+
+###	[statusbar](id:option-statusbar)
+
+状态栏区域 HTML 代码。
+
+可以实现类似“不再提示”的复选框。**注意**：必须有按钮才会显示。
+
+####	类型
+
+String
+
+####	示例
+
+```
+var d = dialog({
+	title: '欢迎',
+	content: '欢迎使用 artDialog 对话框组件！',
+	ok: function () {},
+	statusbar: '<label><input type="checkbox">不再提醒</label>'
+});
+d.show();
+```
+
 ###	[ok](id:option-ok)
 
 确定按钮。
@@ -484,6 +535,26 @@ dialog({
 		.title('消息')
 		.content('hello world!')
 		.width(130);
+		return false;
+	}
+}).show();
+```
+
+###	[okValue](id:option-okValue)
+
+(默认值: "ok")  确定按钮文本。
+
+####	类型
+
+String
+
+####	示例
+
+```
+dialog({
+	okValue: '猛击我',
+	ok: function () {
+		this.content('hello world!');
 		return false;
 	}
 }).show();
@@ -520,26 +591,6 @@ dialog({
 }).show();
 ```
 
-###	[okValue](id:option-okValue)
-
-(默认值: "ok")  确定按钮文本。
-
-####	类型
-
-String
-
-####	示例
-
-```
-dialog({
-	okValue: '猛击我',
-	ok: function () {
-		this.content('hello world!');
-		return false;
-	}
-}).show();
-```
-
 ###	[cancelValue](id:option-cancelValue)
 
 (默认值: cancel) 取消按钮文本。
@@ -563,8 +614,6 @@ dialog({
 
 自定义按钮组。
 
-回调函数``this``指向``dialog``对象，执行完毕默认关闭对话框，若返回``false``则阻止关闭。
-
 ####	类型
 
 Array
@@ -574,7 +623,7 @@ Array
 名称 | 类型 | 描述
 ------------ | ------------- | ------------
 value | String | 按钮显示文本
-callback | Function | (可选) 按钮点击后的回调函数。回调函数``this``指向``dialog``对象，执行完毕默认关闭对话框，若返回``false``则阻止关闭
+callback | Function | (可选) 回调函数``this``指向``dialog``对象，执行完毕默认关闭与销毁对话框（依次执行``close()``与``remove()``），若返回``false``则阻止关闭与销毁
 autofocus | Boolean | (默认值:``false``) 是否自动聚焦
 width | String | (可选) 设置按钮 CSS width 值
 disabled | Boolean | (默认值: ``false``) 是否禁用
@@ -656,37 +705,6 @@ dialog({
 }).show();
 ```
 
-###	[quickClose](id:option-quickClose)
-
-(默认值: false) 是否点击空白出快速关闭。
-
-```
-var d = dialog({
-	content: '点击空白处快速关闭',
-	quickClose: true
-});
-d.show(document.getElementById('option-quickClose'));
-```
-
-###	[fixed](id:option-fiexed)
-
-(默认值: false) 开启固定定位。
-
-固定定位是 css2.1 ``position``的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与 部分移动浏览器对其支持不好，内部会转成绝对定位。
-
-####	类型
-
-Boolean
-
-####	示例
-
-```
-dialog({
-	fixed: true,
-	content: '请拖动滚动条查看'
-}).show();
-```
-
 ###	[skin](id:option-skin)
 
 设置对话框额外的``className``参数。
@@ -723,25 +741,35 @@ dialog({
 }).show();
 ```
 
-###	[id](id:option-id)
+###	[fixed](id:option-fixed)
 
-设定对话框唯一标识。
+(默认值: false) 开启固定定位。
 
-1.  可防止重复 ID 对话框弹出。
-2.  支持使用``dialog.get(id)``获取某个对话框的接口。
+固定定位是 css2.1 ``position``的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与 部分移动浏览器对其支持不好，内部会转成绝对定位。
 
 ####	类型
 
-String
+Boolean
 
 ####	示例
 
 ```
 dialog({
-	id: 'id-demo',
-	content: '再次点击运行看看'
+	fixed: true,
+	content: '请拖动滚动条查看'
 }).show();
-dialog.get('id-demo').title('8888888888');
+```
+
+###	[quickClose](id:option-quickClose)
+
+(默认值: false) 是否点击空白出快速关闭。
+
+```
+var d = dialog({
+	content: '点击空白处快速关闭',
+	quickClose: true
+});
+d.show(document.getElementById('option-quickClose'));
 ```
 
 ###	[zIndex](id:option-zIndex)
@@ -762,28 +790,6 @@ Number
 dialog({
 	zIndex: 87
 }).show();
-```
-
-###	[statusbar](id:option-statusbar)
-
-状态栏区域 HTML 代码。
-
-可以实现类似“不再提示”的复选框。**注意**：必须有按钮才会显示。
-
-####	类型
-
-String
-
-####	示例
-
-```
-var d = dialog({
-	title: '欢迎',
-	content: '欢迎使用 artDialog 对话框组件！',
-	ok: function () {},
-	statusbar: '<label><input type="checkbox">不再提醒</label>'
-});
-d.show();
 ```
 
 ###	[onshow](id:option-onshow)
@@ -822,6 +828,12 @@ var d = dialog({
 d.show();
 ```
 
+###	[onbeforeremove](id:option-onbeforeremove)
+
+对话框销毁之前事件。
+
+回调函数``this``指向``dialog``对象。
+
 ###	[onremove](id:option-onremove)
 
 对话框销毁事件。
@@ -850,7 +862,7 @@ d.show();
 
 回调函数``this``指向``dialog``对象。
 
-###	[onblur](id:option-onblue)
+###	[onblur](id:option-onblur)
 
 对话框失去焦点事件。
 
@@ -861,6 +873,27 @@ d.show();
 对话框位置重置事件。
 
 回调函数``this``指向``dialog``对象。
+
+###	[id](id:option-id)
+
+设定对话框唯一标识。
+
+1.  可防止重复 ID 对话框弹出。
+2.  支持使用``dialog.get(id)``获取某个对话框的接口。
+
+####	类型
+
+String
+
+####	示例
+
+```
+dialog({
+	id: 'id-demo',
+	content: '再次点击运行看看'
+}).show();
+dialog.get('id-demo').title('8888888888');
+```
 
 ##	[属性](id:property)
 

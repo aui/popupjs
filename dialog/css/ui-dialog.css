@@ -12,7 +12,9 @@
 	line-height: 1.428571429;
 	color: #333;
 	opacity: 0;
-	transition: opacity .15s ease-in-out;
+	-webkit-transform: scale(0);
+	transform: scale(0);
+	transition: all .15s ease-in-out;
 }
 .ui-dialog-grid {
 	width: auto;
@@ -24,6 +26,8 @@
 }
 .ui-popup-show .ui-dialog {
 	opacity: 1;
+	-webkit-transform: scale(1);
+	transform: scale(1);
 }
 .ui-popup-focus .ui-dialog {
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -63,6 +67,7 @@
 	color: #000000;
 	text-decoration: none;
 	cursor: pointer;
+	outline: 0;
 	opacity: 0.5;
 	filter: alpha(opacity=50);
 }
