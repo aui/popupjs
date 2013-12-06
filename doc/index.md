@@ -939,7 +939,7 @@ d.show();
 2013-10-16 | 文档使用 [Mou](http://mouapp.com) 生成
 
 <!--[SeaJS code]-->
-<script src="../lib/sea-debug.js"></script>
+<script src="../lib/sea.js"></script>
 <script>
 seajs.config({
   alias: {

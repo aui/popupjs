@@ -13,10 +13,9 @@ var $ = require('jquery');
 var Popup = require('./popup');
 var drag = require('./drag');
 var dialog = require('./dialog')
-var start = drag.types.start;
 
 Popup.oncreate = function (api) {
-	$(api.node).on(start, '[i=title]', function (event) {
+	$(api.node).on(drag.types.start, '[i=title]', function (event) {
 		if (!api.follow) {
 			drag.create(api.node, event);
 		}
