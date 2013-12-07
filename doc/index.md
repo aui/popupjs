@@ -23,7 +23,6 @@ artDialog —— 经典的网页对话框组件，内外皆用心雕琢。
 	*	[阻止对话框关闭](#quickref-callback)
 	*	[不显示关闭按钮](#quickref-cancel)
 	*	[创建 iframe 内容](#quickref-iframe)
-	*	[自定义背景浮层](#quickref-popup)
 *	[方法](#api)
 	*	[show([anchor])](#api-show)
 	*	[showModal([anchor])](#api-showModal)
@@ -60,6 +59,7 @@ artDialog —— 经典的网页对话框组件，内外皆用心雕琢。
 	*	交互
 		*	[fixed](#option-fixed)
 		*	[quickClose](#option-quickClose)
+		*	[autofocus](#option-autofocus)
 		*	[zIndex](#option-zIndex)
 	*	事件
 		*	[onshow](#option-onshow)
@@ -363,11 +363,11 @@ var d = dialog();
 d.close().remove();
 ``` 
 
-###	[content(message)](id:api-content)
+###	[content(html)](id:api-content)
 
 写入对话框内容。
 
-``message``参数支持``String``、``HTMLElement``类型。
+``html``参数支持``String``、``HTMLElement``类型。
 
 
 ####	示例
@@ -378,7 +378,7 @@ d.content('hello world');
 d.show();
 ``` 
 
-###	[title(message)](id:api-title)
+###	[title(text)](id:api-title)
 
 写入对话框标题。
 
@@ -575,11 +575,11 @@ dialog({
 
 取消按钮。
 
-取消按钮也等同于标题栏的关闭按钮。回调函数``this``指向``dialog``对象，执行完毕默认关闭对话框，若返回``false``则阻止关闭。
+取消按钮也等同于标题栏的关闭按钮，若值为``false``则不显示关闭按钮。回调函数``this``指向``dialog``对象，执行完毕默认关闭对话框，若返回``false``则阻止关闭。
 
 ####	类型
 
-Function
+Function, Boolean
 
 ####	示例
 
@@ -756,7 +756,7 @@ dialog({
 
 (默认值: false) 开启固定定位。
 
-固定定位是 css2.1 ``position``的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与 部分移动浏览器对其支持不好，内部会转成绝对定位。
+固定定位是 css2.1 ``position``的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与部分移动浏览器对其支持不好，内部会转成绝对定位。
 
 ####	类型
 
@@ -771,9 +771,23 @@ dialog({
 }).show();
 ```
 
+###	[autofocus](id:option-autofocus)
+
+(默认值: true) 是否支持自动聚焦。
+
+####	类型
+
+Boolean
+
 ###	[quickClose](id:option-quickClose)
 
 (默认值: false) 是否点击空白出快速关闭。
+
+####	类型
+
+Boolean
+
+###	示例
 
 ```
 var d = dialog({
@@ -809,6 +823,10 @@ dialog({
 
 回调函数``this``指向``dialog``对象。
 
+####	类型
+
+Function
+
 ####	示例
 
 ```
@@ -826,6 +844,10 @@ d.show();
 对话框关闭后执行的事件。
 
 回调函数``this``指向``dialog``对象。
+
+####	类型
+
+Function
 
 ####	示例
 
@@ -845,12 +867,19 @@ d.show();
 
 回调函数``this``指向``dialog``对象。
 
+####	类型
+
+Function
+
 ###	[onremove](id:option-onremove)
 
 对话框销毁事件。
 
 回调函数``this``指向``dialog``对象。
 
+####	类型
+
+Function
 
 ####	示例
 
@@ -873,17 +902,29 @@ d.show();
 
 回调函数``this``指向``dialog``对象。
 
+####	类型
+
+Function
+
 ###	[onblur](id:option-onblur)
 
 对话框失去焦点事件。
 
 回调函数``this``指向``dialog``对象。
 
+####	类型
+
+Function
+
 ###	[onreset](id:option-onreset)
 
 对话框位置重置事件。
 
 回调函数``this``指向``dialog``对象。
+
+####	类型
+
+Function
 
 ###	[id](id:option-id)
 
@@ -927,6 +968,7 @@ var d = dialog({
 	ok: function () {
 		var value = $('#property-returnValue-demo').val();
 		this.close(value);
+		this.remove();
 	}
 });
 d.addEventListener('close', function () {
@@ -936,7 +978,7 @@ d.show();
 ```
 
 =======================
-2013-10-16 | 文档使用 [Mou](http://mouapp.com) 生成
+2013-12-07 | 文档使用 [Mou](http://mouapp.com) 生成
 
 <!--[SeaJS code]-->
 <script src="../lib/sea.js"></script>

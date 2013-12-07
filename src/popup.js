@@ -1,5 +1,5 @@
 /*!
-* popup
+* popup.js
 * Date: 2013-12-06
 * (c) 2009-2013 TangBin, http://www.planeArt.cn
 *
@@ -102,9 +102,6 @@ $.extend(Popup.prototype, {
     /** 是否开启固定定位 */
     fixed: false,
 
-    /** 吸附到元素的定位偏移值 */
-    offset: 0,
-
     /** 判断对话框是否删除 */
     destroyed: true,
 
@@ -117,13 +114,15 @@ $.extend(Popup.prototype, {
     /** 是否自动聚焦 */
     autofocus: true,
 
+    align: 'nw',
+
     /** 设置遮罩背景颜色 */
     backdropBackground: '#000',
 
     /** 设置遮罩透明度 */
     backdropOpacity: 0.7,
 
-    /** 重填的 HTML 字符串 */
+    /** 内部的 HTML 字符串 */
     innerHTML: '',
 
     /**
@@ -137,13 +136,13 @@ $.extend(Popup.prototype, {
         }
 
         var that = this;
-        var $popup = this.__popup;
+        var popup = this.__popup;
 
         this.__activeElement = this.__getActive();
 
         this.open = true;
 
-        $popup
+        popup
         .addClass('ui-popup-show')
         .attr('role', this.modal ? 'alertdialog' : 'dialog')
         .css('position', this.fixed ? 'fixed' : 'absolute')
@@ -158,13 +157,13 @@ $.extend(Popup.prototype, {
                 this.__lock();
             }
             
-            $popup.on('mousedown touchstart', function () {
+            popup.on('mousedown touchstart', function () {
                 that.focus();
             });
 
 
-            if (!$popup.html()) {
-                $popup.html(this.innerHTML);
+            if (!popup.html()) {
+                popup.html(this.innerHTML);
             }
 
 
@@ -277,7 +276,15 @@ $.extend(Popup.prototype, {
 
         // 检查焦点是否在浮层里面
         if (!$.contains(node, this.__getActive())) {
-            this.__focus(this.__popup.find('[autofocus]')[0] || node);
+            var autofocus = this.__popup.find('[autofocus]')[0];
+
+            if (!this._autofocus && autofocus) {
+                this._autofocus = true;
+            } else {
+                autofocus = node;
+            }
+
+            this.__focus(autofocus);
         }
 
         Popup.current = this;
@@ -426,8 +433,6 @@ $.extend(Popup.prototype, {
         
         var $elem = anchor.parentNode && $(anchor);
         
-        // 偏差值，主要针对气泡浮层的箭头
-        var OFFSET = $elem ? this.offset : 0;
 
         // 隐藏元素不可用
         if ($elem) {
@@ -437,8 +442,7 @@ $.extend(Popup.prototype, {
             }
         }
         
-        
-        var className = 'ui-popup-';
+        var that = this;
         var fixed = this.fixed;
         var popup = this.__popup;
 
@@ -460,59 +464,74 @@ $.extend(Popup.prototype, {
         var y = offset.top;
         var left =  fixed ? x - docLeft : x;
         var top = fixed ? y - docTop : y;
-        var setLeft = left;
-        var setTop = top + height;
-        var dl = fixed ? 0 : docLeft;
-        var dt = fixed ? 0 : docTop;
 
+        var minLeft = fixed ? 0 : docLeft;
+        var minTop = fixed ? 0 : docTop;
+        var maxLeft = minLeft + winWidth - popupWidth;
+        var maxTop = minTop + winHeight - popupHeight;
 
-        // 计算相对位置（尚未完成）
-        /*var getPopupOffset = function (argv) {
-            var a = argv.split('');
-            // 目标坐标 | 目标尺寸 | 箭头尺寸 | 浮层尺寸
-            var argvs = {
-                n: setTop + OFFSET,
-                w: setLeft,
-                e: left + width - popupWidth,
-                s: top - OFFSET - popupHeight
-            };
+        // n nw ne s sw se w wn ws e en es
+        var css = {};
+        var align = this.align.split('');
+        var className = 'ui-popup-';
+        var reverse = {n: 's', s: 'n', w: 'e', e: 'w'};
+        var name = {n: 'top', s: 'top', w: 'left', e: 'left'};
 
-            return {
-                left: argvs[b],
-                top: argvs[a]
-            };
-        };*/
+        var pos = {
+            n: top + height,
+            s: top - popupHeight,
+            w: left + width,
+            e: left - popupWidth
+        };
 
-        if ((setTop + popupHeight > winHeight + dt) && (top - popupHeight > dt)) {
-            setTop = top - popupHeight - OFFSET;
-            className += 's';
-        } else {
-            setTop = setTop + OFFSET;
-            className += 'n';
-        }
+        var offset = {
+            n: top,
+            s: top - popupHeight + height,
+            w: left,
+            e: left - popupWidth + width,
+            left: left + width / 2 - popupWidth / 2,
+            top: top + height / 2 - popupHeight / 2
+        };
+        
+        var range = {
+            left: [minLeft, maxLeft],
+            top: [minTop, maxTop]
+        };
 
+        // 超出可视区域重新适应位置
+        $.each(align, function (i, val) {
+            if (pos[val] > range[name[val]][1]) {
+                align[i] = reverse[val];
+            }
 
-        if ((setLeft + popupWidth > winWidth + dl) && (left - popupWidth > dl)) {
-            setLeft = left - popupWidth + width;
-            className += 'e';
-        } else {
-            className += 'w';
-        }
-
-        popup.css({
-            left: setLeft,
-            top: setTop
+            if (pos[val] < range[name[val]][0]) {
+                align[i] = reverse[val];
+            }   
         });
-        
-        
-        this.__clearFollow();
-        this.__followSkin = className;
-        this.follow = anchor;
+
+        // 居中对齐
+        if (!align[1]) {
+            name[align[1]] = name[align[0]] === 'left' ? 'top' : 'left';
+            offset[align[1]] = offset[name[align[1]]];
+        }
+
+
+        className += align.join('');
+
+        that.__clearFollow();
+        that.__followSkin = className;
 
 
         if ($elem) {
             popup.addClass(className);
         }
+
+        
+        css[name[align[0]]] = pos[align[0]];
+        css[name[align[1]]] = offset[align[1]];
+        popup.css(css);
+
+        this.follow = anchor;
 
     },
 
@@ -602,7 +621,7 @@ $.extend(Popup.prototype, {
         backdrop
         .css(backdropCss)
         .animate({opacity: this.backdropOpacity}, 150)
-        .appendTo('body')
+        .insertAfter(popup)
         // 锁住模态对话框的 tab 简单办法
         // 甚至可以避免焦点落入对话框外的 iframe 中
         .attr({tabindex: '0'})

@@ -329,7 +329,6 @@ pre {
 <li><a href="#quickref-callback">阻止对话框关闭</a></li>
 <li><a href="#quickref-cancel">不显示关闭按钮</a></li>
 <li><a href="#quickref-iframe">创建 iframe 内容</a></li>
-<li><a href="#quickref-popup">自定义背景浮层</a></li>
 </ul>
 </li>
 <li><a href="#api">方法</a>
@@ -388,6 +387,7 @@ pre {
 <ul>
 <li><a href="#option-fixed">fixed</a></li>
 <li><a href="#option-quickClose">quickClose</a></li>
+<li><a href="#option-autofocus">autofocus</a></li>
 <li><a href="#option-zIndex">zIndex</a></li>
 </ul>
 </li>
@@ -425,7 +425,7 @@ pre {
 
 <p>在模块中引入 artDialog（支持 RequireJS 与 SeaJS）：</p>
 
-<pre><code>var dialog = require('popup/dialog/dialog');
+<pre><code>var dialog = require('./artDialog/src/dialog');
 //..
 </code></pre>
 
@@ -650,6 +650,16 @@ d.content('hello world');
 d.show(document.getElementById('api-show'));
 </code></pre>
 
+<pre><code>var d = dialog({
+    id: 'api-show-dialog',
+    content: '右键菜单'
+});
+$(document).on('contextmenu', function (event) {
+    d.show(event);
+    return d.destroyed;
+});
+</code></pre>
+
 <h3><span id="api-showModal">showModal([anchor])</span></h3>
 
 <p>显示一个模态对话框。</p>
@@ -686,11 +696,11 @@ d.showModal();
 d.close().remove();
 </code></pre>
 
-<h3><span id="api-content">content(message)</span></h3>
+<h3><span id="api-content">content(html)</span></h3>
 
 <p>写入对话框内容。</p>
 
-<p><code>message</code>参数支持<code>String</code>、<code>HTMLElement</code>类型。</p>
+<p><code>html</code>参数支持<code>String</code>、<code>HTMLElement</code>类型。</p>
 
 <h4>示例</h4>
 
@@ -699,7 +709,7 @@ d.content('hello world');
 d.show();
 </code></pre>
 
-<h3><span id="api-title">title(message)</span></h3>
+<h3><span id="api-title">title(text)</span></h3>
 
 <p>写入对话框标题。</p>
 
@@ -888,11 +898,11 @@ d.show();
 
 <p>取消按钮。</p>
 
-<p>取消按钮也等同于标题栏的关闭按钮。回调函数<code>this</code>指向<code>dialog</code>对象，执行完毕默认关闭对话框，若返回<code>false</code>则阻止关闭。</p>
+<p>取消按钮也等同于标题栏的关闭按钮，若值为<code>false</code>则不显示关闭按钮。回调函数<code>this</code>指向<code>dialog</code>对象，执行完毕默认关闭对话框，若返回<code>false</code>则阻止关闭。</p>
 
 <h4>类型</h4>
 
-<p>Function</p>
+<p>Function, Boolean</p>
 
 <h4>示例</h4>
 
@@ -1093,7 +1103,7 @@ dialog({
 
 <p>(默认值: false) 开启固定定位。</p>
 
-<p>固定定位是 css2.1 <code>position</code>的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与 部分移动浏览器对其支持不好，内部会转成绝对定位。</p>
+<p>固定定位是 css2.1 <code>position</code>的一个属性，它能固定在浏览器某个地方，也不受滚动条拖动影响。IE6 与部分移动浏览器对其支持不好，内部会转成绝对定位。</p>
 
 <h4>类型</h4>
 
@@ -1107,9 +1117,23 @@ dialog({
 }).show();
 </code></pre>
 
+<h3><span id="option-autofocus">autofocus</span></h3>
+
+<p>(默认值: true) 是否支持自动聚焦。</p>
+
+<h4>类型</h4>
+
+<p>Boolean</p>
+
 <h3><span id="option-quickClose">quickClose</span></h3>
 
 <p>(默认值: false) 是否点击空白出快速关闭。</p>
+
+<h4>类型</h4>
+
+<p>Boolean</p>
+
+<h3>示例</h3>
 
 <pre><code>var d = dialog({
     content: '点击空白处快速关闭',
@@ -1143,6 +1167,10 @@ d.show(document.getElementById('option-quickClose'));
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
 
+<h4>类型</h4>
+
+<p>Function</p>
+
 <h4>示例</h4>
 
 <pre><code>var d = dialog({
@@ -1159,6 +1187,10 @@ d.show();
 <p>对话框关闭后执行的事件。</p>
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
+
+<h4>类型</h4>
+
+<p>Function</p>
 
 <h4>示例</h4>
 
@@ -1177,11 +1209,19 @@ d.show();
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
 
+<h4>类型</h4>
+
+<p>Function</p>
+
 <h3><span id="option-onremove">onremove</span></h3>
 
 <p>对话框销毁事件。</p>
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
+
+<h4>类型</h4>
+
+<p>Function</p>
 
 <h4>示例</h4>
 
@@ -1203,17 +1243,29 @@ d.show();
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
 
+<h4>类型</h4>
+
+<p>Function</p>
+
 <h3><span id="option-onblur">onblur</span></h3>
 
 <p>对话框失去焦点事件。</p>
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
 
+<h4>类型</h4>
+
+<p>Function</p>
+
 <h3><span id="option-onreset">onreset</span></h3>
 
 <p>对话框位置重置事件。</p>
 
 <p>回调函数<code>this</code>指向<code>dialog</code>对象。</p>
+
+<h4>类型</h4>
+
+<p>Function</p>
 
 <h3><span id="option-id">id</span></h3>
 
@@ -1258,6 +1310,7 @@ dialog.get('id-demo').title('8888888888');
     ok: function () {
         var value = $('#property-returnValue-demo').val();
         this.close(value);
+        this.remove();
     }
 });
 d.addEventListener('close', function () {
@@ -1268,27 +1321,36 @@ d.show();
 
 <hr />
 
-<p>2013-10-16 | 文档使用 <a href="http://mouapp.com">Mou</a> 生成</p>
+<p>2013-12-07 | 文档使用 <a href="http://mouapp.com">Mou</a> 生成</p>
 
 <!--[SeaJS code]-->
+
+
 <script src="../lib/sea.js"></script>
+
+
 <script>
 seajs.config({
   alias: {
-  "jquery": "jquery-1.10.2.js"
+    "jquery": "jquery-1.10.2.js"
   }
 });
 seajs.use('./js/doc.js');
 </script>
+
+
 <!--[/SeaJS code]-->
+
+
+
 
 <!--[RequireJS code]
 <script src="../lib/require.js"></script>
 <script>
 require.config({
-  paths: {
-    jquery: '../lib/jquery-1.10.2'
-  }
+    paths: {
+        jquery: '../lib/jquery-1.10.2'
+    }
 });
 require(['./js/doc.js']);
 </script>

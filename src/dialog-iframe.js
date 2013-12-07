@@ -1,5 +1,5 @@
 /*!
-* artDialog v6.0.0
+* artDialog v6.0.0 - iframe 插件
 * Date: 2013-12-06
 * https://github.com/aui/artDialog6
 * (c) 2009-2013 TangBin, http://www.planeArt.cn

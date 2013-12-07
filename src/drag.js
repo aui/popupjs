@@ -1,5 +1,5 @@
 /*!
-* drag
+* drag.js
 * Date: 2013-12-06
 * (c) 2009-2013 TangBin, http://www.planeArt.cn
 *

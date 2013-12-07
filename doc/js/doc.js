@@ -28,8 +28,8 @@ window.openDialog = function (options) {
 	var oniframeload = options.oniframeload;
 
 	(window.seajs ? seajs.use : window.require)([
-		'../dialog',
-		'../dialog-iframe'
+		'../src/dialog',
+		'../src/dialog-iframe'
 	], function (dialog, openIframe) {
 		var api = url ? openIframe(options) : dialog(options);
 		api[modal === false ? 'show' : 'showModal'](follow);

@@ -104,8 +104,7 @@
 	text-align: left;
 }
 .ui-dialog-footer {
-	padding: 19px 20px 20px;
-	margin-top: 15px;
+	padding: 0 20px 20px 20px;
 }
 .ui-dialog-statusbar {
 	float: left;
@@ -386,12 +385,20 @@
 
 
 @-webkit-keyframes ui-dialog-loading {
-    0% {-webkit-transform: rotate(0deg);}
-      100% {-webkit-transform: rotate(360deg);}
+    0% {
+    	-webkit-transform: rotate(0deg);
+    }
+    100% {
+    	-webkit-transform: rotate(360deg);
+    }
 }
 @keyframes ui-dialog-loading {
-    0% {transform: rotate(0deg);}
-      100% {transform: rotate(360deg);}
+    0% {
+    	transform: rotate(0deg);
+    }
+    100% {
+    	transform: rotate(360deg);
+    }
 }
 
 .ui-dialog-loading {

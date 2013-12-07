@@ -5,7 +5,7 @@
 	<title>test</title>
 </head>
 <body>
-<div><label><input id="input" type="text" value="hello world" style="padding: 5px;font-size:18px" /></label></div>
+<div><label><input autofocus id="input" type="text" value="hello world" style="padding: 5px;font-size:18px" /></label></div>
 <button id="height">设置高度</button> <button id="open">弹新对话框</button>  <button id="remove">传值并关闭对话框</button>
 <script src="../lib/sea.js"></script>
 <script>
@@ -48,7 +48,7 @@ seajs.use(['jquery'], function ($) {
 
 		$('#open').on('click', function () {
 			top.openDialog({
-				url: './iframe-input.html',
+				url: '../test/iframe-input.html',
 				title: 'loading..',
 				width: 400,
 				//height: 120,
