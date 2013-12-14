@@ -1,6 +1,7 @@
 /*!
- * selectbox.js
+ * selectbox
  * Date: 2013-12-13
+ * https://github.com/aui/popupjs
  * (c) 2009-2013 TangBin, http://www.planeArt.cn
  *
  * This is licensed under the GNU LGPL, version 2.1 or later.
@@ -90,7 +91,7 @@ function Select (select, options) {
         right: 'auto',
         top: 'auto',
         bottom: 'auto',
-        zIndex: this.showDropdown ? -1 : 1
+        zIndex: this.isShowDropdown ? -1 : 1
     }).data('selectbox', this);
 
     // 代替原生 select
@@ -118,7 +119,7 @@ $.extend(Select.prototype, {
     openClass:     'ui-selectbox-open',
 
     // 移动端不使用模拟下拉层
-    showDropdown:  !('createTouch' in document),
+    isShowDropdown:  !('createTouch' in document),
 
     selectedIndex: 0,
     value: '',
@@ -135,7 +136,7 @@ $.extend(Select.prototype, {
         var select = this.select;
         var selectbox = that._selectbox;
 
-        if (select[0].disabled || !select[0].length) {
+        if (!this.isShowDropdown || select[0].disabled || !select[0].length) {
             return false;
         }
 
@@ -213,8 +214,6 @@ $.extend(Select.prototype, {
         dropdown.find('[data-option=' + oldIndex + ']').removeClass(selectedClass);
         option.addClass(selectedClass);
         option.focus();
-        //option[0].scrollIntoView();
-        //console.log(option[0].scrollIntoView)
 
         // 更新模拟控件的显示值
         this._value.html(this._getOption(index).html());
