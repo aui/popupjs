@@ -1,6 +1,7 @@
 /*!
- * popup.js
+ * popupjs
  * Date: 2013-12-13
+ * https://github.com/aui/popupjs
  * (c) 2009-2013 TangBin, http://www.planeArt.cn
  *
  * This is licensed under the GNU LGPL, version 2.1 or later.

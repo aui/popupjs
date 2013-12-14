@@ -1,6 +1,7 @@
 /*!
- * selectbox.js
+ * selectbox
  * Date: 2013-12-13
+ * https://github.com/aui/popupjs
  * (c) 2009-2013 TangBin, http://www.planeArt.cn
  *
  * This is licensed under the GNU LGPL, version 2.1 or later.
@@ -213,8 +214,6 @@ $.extend(Select.prototype, {
         dropdown.find('[data-option=' + oldIndex + ']').removeClass(selectedClass);
         option.addClass(selectedClass);
         option.focus();
-        //option[0].scrollIntoView();
-        //console.log(option[0].scrollIntoView)
 
         // 更新模拟控件的显示值
         this._value.html(this._getOption(index).html());
