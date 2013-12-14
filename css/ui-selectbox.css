@@ -39,7 +39,7 @@
           transition: all linear 0.2s;
 }
 .ui-selectbox:hover {
-    
+    box-shadow: 0 3px 3px rgba(0, 0, 0, .1);
 }
 .ui-selectbox::-moz-focus-inner {
     border: 0;
@@ -50,6 +50,7 @@ select[disabled] + .ui-selectbox {
     cursor: default;
     box-shadow: none;
     opacity: .7;
+    user-select:none
 }
 .ui-selectbox-inner {
     padding: 0 0 0 5px;

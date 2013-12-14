@@ -10,6 +10,8 @@ select 修饰器 - 让 select 原生控件可自定义样式与结构
 
 **请注意**：原生 select 是一个很基础的 UI 控件，包含大量的交互逻辑。如果想要“美化”它必须重新使用 HTML 与 CSS 实现一套，复杂度极高，作为前端工程师的我们应该了解其利弊，尽可能的对项目进行审视，是否为了一点视觉细节而加剧项目复杂度？如果你认为值得尝试，请相信这是你见过的世界上最负责的模拟下拉控件，没有之一。
 
+使用 selectbox 除了可以让原生 select 控件受 css 控制之外，甚至可以改变下拉框的 HTML 结构，以便产生更多的表现形式，以满足产品与设计师的要求 —— 比如让选项支持 icon（设计师就是拿这个理由说服我苦逼的写了 selectbox…）。
+
 ##	特性
 
 ###	已经模拟的特性
@@ -26,6 +28,7 @@ select 修饰器 - 让 select 原生控件可自定义样式与结构
 * optgroup 选项分组
 * 点击页面任意空白区域自动关闭（包括 iframe）
 * 超多选项自动使用滚动条并自动滚动到选中项
+* 与原生 select 控件一样快的事件响应能力
 
 ###	不支持的特性
 
@@ -46,7 +49,7 @@ select 修饰器 - 让 select 原生控件可自定义样式与结构
 在模块中引入 selectbox（使用 RequireJS 或 SeaJS 加载）：
 
 ```
-var selectbox = require('./popup/src/selectbox');
+var selectbox = require('./popupjs/src/selectbox');
 ```
 
 ###	接口
