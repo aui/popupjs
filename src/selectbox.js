@@ -42,6 +42,23 @@ function Select (select, options) {
     }
 
 
+    if (!this.isShowDropdown) {
+        this._globalKeydown = $.proxy(this._globalKeydown, this);
+
+
+        // 克隆原生 select 的基本 UI 事件
+        select
+        .on('focus blur', function (event) {
+            that[event.type]();
+            event.preventDefault();
+        })
+        .on('change', function () {
+            var text = that._getOption().html();
+            that._value.html(text);
+        });
+    }
+
+
     var selectboxHtml = this._tpl(this.selectboxHtml, $.extend({
         textContent: that._getOption().html() || ''
     }, select.data()));
@@ -49,19 +66,6 @@ function Select (select, options) {
 
     this._selectbox = $(selectboxHtml);
     this._value = this._selectbox.find('[data-value]');
-    this._globalKeydown = $.proxy(this._globalKeydown, this);
-
-
-    // 克隆原生 select 的基本 UI 事件
-    select
-    .on('focus blur', function (event) {
-        that[event.type]();
-        event.preventDefault();
-    })
-    .on('change', function () {
-        var text = that._getOption().html();
-        that._value.html(text);
-    });
 
 
     this._selectbox
@@ -136,7 +140,7 @@ $.extend(Select.prototype, {
         var select = this.select;
         var selectbox = that._selectbox;
 
-        if (!this.isShowDropdown || select[0].disabled || !select[0].length) {
+        if (select[0].disabled || !select[0].length) {
             return false;
         }
 
