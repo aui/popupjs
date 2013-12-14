@@ -91,7 +91,7 @@ function Select (select, options) {
         right: 'auto',
         top: 'auto',
         bottom: 'auto',
-        zIndex: this.showDropdown ? -1 : 1
+        zIndex: this.isShowDropdown ? -1 : 1
     }).data('selectbox', this);
 
     // 代替原生 select
@@ -119,7 +119,7 @@ $.extend(Select.prototype, {
     openClass:     'ui-selectbox-open',
 
     // 移动端不使用模拟下拉层
-    showDropdown:  !('createTouch' in document),
+    isShowDropdown:  !('createTouch' in document),
 
     selectedIndex: 0,
     value: '',
@@ -136,7 +136,7 @@ $.extend(Select.prototype, {
         var select = this.select;
         var selectbox = that._selectbox;
 
-        if (select[0].disabled || !select[0].length) {
+        if (!this.isShowDropdown || select[0].disabled || !select[0].length) {
             return false;
         }
 

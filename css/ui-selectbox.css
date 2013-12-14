@@ -39,14 +39,16 @@
           transition: all linear 0.2s;
 }
 .ui-selectbox:hover {
-    box-shadow: 0 3px 3px rgba(0, 0, 0, .1);
+    border: 1px solid #09E;
 }
 .ui-selectbox::-moz-focus-inner {
     border: 0;
     padding: 0;
 }
-select[disabled] + .ui-selectbox {
+select[disabled] + .ui-selectbox,
+select[disabled] + .ui-selectbox:hover {
     color: #CCC;
+    border: 1px solid #B7B7B7;
     cursor: default;
     box-shadow: none;
     opacity: .7;
@@ -88,7 +90,7 @@ select[disabled] + .ui-selectbox {
 .ui-selectbox-focus {
     border: 1px solid #09E;
     outline: 0 none;
-    box-shadow: 0 0 3px #06C;
+    box-shadow: 0 0 3px rgba(8, 74, 195, .5);
 }
 .ui-selectbox-dropdown {
     position: relative;
