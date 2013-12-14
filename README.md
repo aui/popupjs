@@ -1,22 +1,17 @@
-#	artDialog``v6``
-==========================
+#	PopupJS
 
-artDialog v6 —— 经典的网页对话框组件，内外皆用心雕琢。
+基于 [W3C HTML5 Dialog API](http://www.w3.org/TR/2013/CR-html5-20130806/interactive-elements.html#the-dialog-element) 的浮层基础类，提供按元素对齐、居中对齐、自动 zIndex、自动无障碍焦点流程等。
 
-##	用户
+##	应用演示
 
-四年来，有超过 40 万网站在使用 artDialog，其中包括：
+[下拉组件](http://aui.github.io/popupjs/doc/selectbox.html)
 
-*	[QQ空间 v8（腾讯）](http://qzone.qq.com)
-*	[QQ旋风（腾讯）](http://xf.qq.com)
-*	[Phpcms（盛大）](http://www.phpcms.cn)
-*	[极路由](http://www.hiwifi.com)
-*	[中国电信客服系统](http://www.189.cn)
+[对话框（artDialog）](http://aui.github.io/artDialog/doc/index.html)
 
-##	文档与示例
+##	兼容性
 
-[./doc/index.html](./doc/index.html)
+测试通过：IE6~IE11、Chrome、Firefox、Safari、Opera
 
 ##	授权协议
 
-[开源 LGPL 协议或商业协议](./LICENSE.md)
+[LGPL](http://www.gnu.org/licenses/lgpl-2.1.html)

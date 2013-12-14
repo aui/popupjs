@@ -1,11 +1,11 @@
 /*!
-* popup.js
-* Date: 2013-12-06
-* (c) 2009-2013 TangBin, http://www.planeArt.cn
-*
-* This is licensed under the GNU LGPL, version 2.1 or later.
-* For details, see: http://www.gnu.org/licenses/lgpl-2.1.html
-*/
+ * popup.js
+ * Date: 2013-12-13
+ * (c) 2009-2013 TangBin, http://www.planeArt.cn
+ *
+ * This is licensed under the GNU LGPL, version 2.1 or later.
+ * For details, see: http://www.gnu.org/licenses/lgpl-2.1.html
+ */
 define(function (require) {
 
 var $ = require('jquery');
@@ -114,7 +114,8 @@ $.extend(Popup.prototype, {
     /** 是否自动聚焦 */
     autofocus: true,
 
-    align: 'nw',
+    /** 对齐方式 */
+    align: 'bottom left',
 
     /** 设置遮罩背景颜色 */
     backdropBackground: '#000',
@@ -125,9 +126,12 @@ $.extend(Popup.prototype, {
     /** 内部的 HTML 字符串 */
     innerHTML: '',
 
+    /** 类名 */
+    className: 'ui-popup',
+
     /**
      * 显示浮层
-     * @param   {HTMLElement Object, Event Object}  指定位置（可选）
+     * @param   {HTMLElement, Event}  指定位置（可选）
      */
     show: function (anchor) {
 
@@ -141,9 +145,10 @@ $.extend(Popup.prototype, {
         this.__activeElement = this.__getActive();
 
         this.open = true;
+        this.follow = anchor;
 
         popup
-        .addClass('ui-popup-show')
+        .addClass(this.className + '-show')
         .attr('role', this.modal ? 'alertdialog' : 'dialog')
         .css('position', this.fixed ? 'fixed' : 'absolute')
         .show();
@@ -156,10 +161,6 @@ $.extend(Popup.prototype, {
             if (this.modal) {
                 this.__lock();
             }
-            
-            popup.on('mousedown touchstart', function () {
-                that.focus();
-            });
 
 
             if (!popup.html()) {
@@ -177,7 +178,7 @@ $.extend(Popup.prototype, {
             this.__ready = true;
         }
 
-        this.reset(anchor).focus();
+        this.reset().focus();
         this.__dispatchEvent('show');
 
         return this;
@@ -200,11 +201,10 @@ $.extend(Popup.prototype, {
                 this.returnValue = result;
             }
             
-            this.__popup.hide().removeClass('ui-popup-show');
+            this.__popup.hide().removeClass(this.className + '-show');
             this.__backdrop.hide();
             this.open = false;
             this.blur();
-
             this.__dispatchEvent('close');
         }
     
@@ -248,9 +248,9 @@ $.extend(Popup.prototype, {
 
 
     /** 手动刷新位置 */
-    reset: function (anchor) {
+    reset: function () {
 
-        var elem = anchor || this.follow;
+        var elem = this.follow;
 
         if (elem) {
             this.__follow(elem);
@@ -288,7 +288,7 @@ $.extend(Popup.prototype, {
         }
 
         Popup.current = this;
-        this.__popup.addClass('ui-popup-focus');
+        this.__popup.addClass(this.className + '-focus');
         this.__zIndex();
         this.__dispatchEvent('focus');
 
@@ -307,7 +307,8 @@ $.extend(Popup.prototype, {
             this.__focus(activeElement);
         }
 
-        this.__popup.removeClass('ui-popup-focus');
+        this._autofocus = false;
+        this.__popup.removeClass(this.className + '-focus');
         this.__dispatchEvent('blur');
 
         return this;
@@ -424,7 +425,7 @@ $.extend(Popup.prototype, {
         style.left = Math.max(parseInt(left), dl) + 'px';
         style.top = Math.max(parseInt(top), dt) + 'px';
 
-        this.__clearFollow();
+        popup.removeClass(this.__followSkin);
     },
     
     
@@ -437,7 +438,7 @@ $.extend(Popup.prototype, {
         // 隐藏元素不可用
         if ($elem) {
             var o = $elem.offset();
-            if (o.left * o.top <= 0) {
+            if (o.left * o.top < 0) {
                 return this.__center();
             }
         }
@@ -465,60 +466,71 @@ $.extend(Popup.prototype, {
         var left =  fixed ? x - docLeft : x;
         var top = fixed ? y - docTop : y;
 
+
         var minLeft = fixed ? 0 : docLeft;
         var minTop = fixed ? 0 : docTop;
         var maxLeft = minLeft + winWidth - popupWidth;
         var maxTop = minTop + winHeight - popupHeight;
 
-        // n nw ne s sw se w wn ws e en es
+
         var css = {};
-        var align = this.align.split('');
-        var className = 'ui-popup-';
-        var reverse = {n: 's', s: 'n', w: 'e', e: 'w'};
-        var name = {n: 'top', s: 'top', w: 'left', e: 'left'};
+        var align = this.align.split(' ');
+        var className = this.className + '-';
+        var reverse = {top: 'bottom', bottom: 'top', left: 'right', right: 'left'};
+        var name = {top: 'top', bottom: 'top', left: 'left', right: 'left'};
 
-        var pos = {
-            n: top + height,
-            s: top - popupHeight,
-            w: left + width,
-            e: left - popupWidth
-        };
 
-        var offset = {
-            n: top,
-            s: top - popupHeight + height,
-            w: left,
-            e: left - popupWidth + width,
+        var temp = [{
+            top: top - popupHeight,
+            bottom: top + height,
+            left: left - popupWidth,
+            right: left + width
+        }, {
+            top: top,
+            bottom: top - popupHeight + height,
+            left: left,
+            right: left - popupWidth + width
+        }];
+
+
+        var center = {
             left: left + width / 2 - popupWidth / 2,
             top: top + height / 2 - popupHeight / 2
         };
+
         
         var range = {
             left: [minLeft, maxLeft],
             top: [minTop, maxTop]
         };
 
+
         // 超出可视区域重新适应位置
         $.each(align, function (i, val) {
-            if (pos[val] > range[name[val]][1]) {
+
+            // 超出右或下边界：使用左或者上边对齐
+            if (temp[i][val] > range[name[val]][1]) {
+                val = align[i] = reverse[val];
+            }
+
+            // 超出左或右边界：使用右或者下边对齐
+            if (temp[i][val] < range[name[val]][0]) {
                 align[i] = reverse[val];
             }
 
-            if (pos[val] < range[name[val]][0]) {
-                align[i] = reverse[val];
-            }   
         });
 
-        // 居中对齐
+
+        // 一个参数的情况
         if (!align[1]) {
             name[align[1]] = name[align[0]] === 'left' ? 'top' : 'left';
-            offset[align[1]] = offset[name[align[1]]];
+            temp[1][align[1]] = center[name[align[1]]];
         }
 
+        className += align.join('-');
 
-        className += align.join('');
 
-        that.__clearFollow();
+        popup.removeClass(this.__followSkin);
         that.__followSkin = className;
 
 
@@ -527,22 +539,10 @@ $.extend(Popup.prototype, {
         }
 
         
-        css[name[align[0]]] = pos[align[0]];
-        css[name[align[1]]] = offset[align[1]];
+        css[name[align[0]]] = parseInt(temp[0][align[0]]);
+        css[name[align[1]]] = parseInt(temp[1][align[1]]);
         popup.css(css);
 
-        this.follow = anchor;
-
-    },
-
-
-    // 清理定位缓存信息
-    __clearFollow: function () {
-        if (!this.follow) {
-            return;
-        }
-        this.__popup.removeClass(this.__followSkin);
-        delete this.follow;
     },
 
 
@@ -600,7 +600,7 @@ $.extend(Popup.prototype, {
         };
 
 
-        popup.addClass('ui-popup-modal');
+        popup.addClass(this.className + '-modal');
         
 
         // 避免遮罩不能盖住上一次的对话框
@@ -636,7 +636,7 @@ $.extend(Popup.prototype, {
     __unlock: function () {
 
         if (this.modal) {
-            this.__popup.addClass('ui-popup-modal');
+            this.__popup.removeClass(this.className + '-modal');
             this.__backdrop.remove();
             delete this.modal;
         }
