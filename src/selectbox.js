@@ -36,26 +36,10 @@ function Select (select, options) {
         return;
     }
 
+
     if (select.data('selectbox')) {
         // 删除上一次的 selectbox 以重新更新
         select.data('selectbox').remove();
-    }
-
-
-    if (!this.isShowDropdown) {
-        this._globalKeydown = $.proxy(this._globalKeydown, this);
-
-
-        // 克隆原生 select 的基本 UI 事件
-        select
-        .on('focus blur', function (event) {
-            that[event.type]();
-            event.preventDefault();
-        })
-        .on('change', function () {
-            var text = that._getOption().html();
-            that._value.html(text);
-        });
     }
 
 
@@ -68,10 +52,17 @@ function Select (select, options) {
     this._value = this._selectbox.find('[data-value]');
 
 
+    if (this.isShowDropdown) {
+        this._globalKeydown = $.proxy(this._globalKeydown, this);
+
+        this._selectbox
+        .on(this._clickType + ' focus blur', function (event) {
+            that[that._clickType === event.type ? 'click' : event.type]();
+        });
+    }
+
+
     this._selectbox
-    .on(this._clickType + ' focus blur', function (event) {
-        that[that._clickType === event.type ? 'click' : event.type]();
-    })
     .css({
         width: select.outerWidth() + 'px'
     });
@@ -83,6 +74,18 @@ function Select (select, options) {
     //     height: isIE6 ? selectHeight : '',
     //     lineHeight: selectHeight
     // });
+
+
+    // 克隆原生 select 的基本 UI 事件
+    select
+    .on('focus blur', function (event) {
+        that[event.type]();
+        event.preventDefault();
+    })
+    .on('change', function () {
+        var text = that._getOption().html();
+        that._value.html(text);
+    });
 
 
     // 隐藏原生 select
