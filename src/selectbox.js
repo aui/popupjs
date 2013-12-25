@@ -117,7 +117,7 @@ $.extend(Select.prototype, {
     +     '<i class="ui-selectbox-icon"></i>'
     + '</div>',
     
-    dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu">{{options}}</dl>',
+    dropdownHtml:  '<dl class="ui-selectbox-dropdown">{{options}}</dl>',
     optgroupHtml:  '<dt class="ui-selectbox-optgroup">{{label}}</dt>',
     optionHtml:    '<dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1">{{textContent}}</dd>',
     selectedClass: 'ui-selectbox-selected',
