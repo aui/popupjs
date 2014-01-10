@@ -6,7 +6,7 @@
 
 ##	关于
 
-select 修饰器 - 让 select 原生控件可自定义样式与结构
+select 修饰器 - 让 select 原生控件可自定义样式与结构。
 
 **请注意**：原生 select 是一个很基础的 UI 控件，包含大量的交互逻辑。如果想要“美化”它必须重新使用 HTML 与 CSS 实现一套，复杂度极高，作为前端工程师的我们应该清楚的知道模拟控件很多时候是弊大于利的，如果你仍然认为值得尝试，请相信这是你见过的世界上最负责的模拟下拉控件，没有之一。
 
@@ -39,9 +39,9 @@ select 修饰器 - 让 select 原生控件可自定义样式与结构
 ###	兼容性
 
 * IE6~IE11
-* Chrome
+* Chrome（包括 Android 平台）
+* Safari（包括 iOS 平台）
 * Firefox
-* Safari
 * Opera
 
 ##	调用
@@ -51,6 +51,8 @@ select 修饰器 - 让 select 原生控件可自定义样式与结构
 ```
 var selectbox = require('./popupjs/src/selectbox');
 ```
+
+>	selectbox 源码使用 CMD 的模块形式，全局依赖 jquery 模块。亦可自行合并源码并改为普通 jquery 插件调用。
 
 ###	接口
 
@@ -93,7 +95,7 @@ selectbox(document.getElementById('demo-basic'));
 例如我们生成一个包含图片的下拉列表：
 
 ```
-<select id="demo-select-img">
+<select id="demo-select-img" onchange="alert(this.value)">
 	<optgroup label="常用">
 		<option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif">微笑</option>
 		<option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif">瘪嘴</option>
@@ -110,7 +112,7 @@ selectbox(document.getElementById('demo-basic'));
 </select>
 ```
 
-上面是原生 select 控件的 HTML 代码，注意到我们将图片属性写在了``<option>``标签的自定义属性``data-icon``上，接下来我们根据它转换带图的下拉选项：
+上面是原生 select 控件的 HTML 代码，注意到我们将图片地址写在了``<option>``标签的自定义属性``data-icon``上，接下来我们根据它转换带图的下拉选项：
 
 ```
 selectbox(document.getElementById('demo-select-img'), {
@@ -118,7 +120,7 @@ selectbox(document.getElementById('demo-select-img'), {
 });
 ```
 
-<select id="demo-diy">
+<select id="demo-diy" onchange="alert(this.value)">
 	<optgroup label="常用">
 		<option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif">微笑</option>
 		<option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif">瘪嘴</option>
@@ -321,6 +323,7 @@ selectbox(document.getElementById('demo-select-img'), {
 
 [新页面打开](../test/selectbox.html)
 
+<script>!function(a){function d(){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=0.25, maximum-scale=1.6")}var c,b=a.getElementsByTagName("meta");if(navigator.userAgent.match(/iPhone/i)){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=1.0, maximum-scale=1.0");a.addEventListener("gesturestart",d,!1)}}(document);</script>
 
 <!--[SeaJS code]-->
 <script src="../lib/sea.js"></script>
