@@ -1,6 +1,6 @@
 /*!
  * selectbox
- * Date: 2013-12-13
+ * Date: 2014-01-10
  * https://github.com/aui/popupjs
  * (c) 2009-2013 TangBin, http://www.planeArt.cn
  *
@@ -17,10 +17,14 @@ var css = '../css/ui-selectbox.css';
 // css loader: RequireJS & SeaJS
 css = require[require.toUrl ? 'toUrl' : 'resolve'](css);
 css = '<link rel="stylesheet" href="' + css + '" />';
-$('base')[0] ? $('base').before(css) : $('head').append(css);
+if ($('base')[0]) {
+    $('base').before(css);
+} else {
+    $('head').append(css);
+}
 
 
-function Select (select, options) {
+function Selectbox (select, options) {
 
     select = this.select = $(select);
 
@@ -52,7 +56,8 @@ function Select (select, options) {
     this._value = this._selectbox.find('[data-value]');
 
 
-    if (this.isShowDropdown) {
+    // selectbox 的事件绑定
+    if (this.isShowDropdown && !select.attr('disabled')) {
         this._globalKeydown = $.proxy(this._globalKeydown, this);
 
         this._selectbox
@@ -103,13 +108,13 @@ function Select (select, options) {
 
     // 代替原生 select
     select.after(this._selectbox);
-};
+}
 
 var popup = function () {};
 popup.prototype = Popup.prototype;
-Select.prototype = new popup;
+Selectbox.prototype = new popup();
 
-$.extend(Select.prototype, {
+$.extend(Selectbox.prototype, {
 
     selectboxHtml:
       '<div class="ui-selectbox" hidefocus="true" style="user-select:none" onselectstart="return false" tabindex="-1" aria-hidden>'
@@ -117,7 +122,7 @@ $.extend(Select.prototype, {
     +     '<i class="ui-selectbox-icon"></i>'
     + '</div>',
     
-    dropdownHtml:  '<dl class="ui-selectbox-dropdown" role="menu">{{options}}</dl>',
+    dropdownHtml:  '<dl class="ui-selectbox-dropdown">{{options}}</dl>',
     optgroupHtml:  '<dt class="ui-selectbox-optgroup">{{label}}</dt>',
     optionHtml:    '<dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1">{{textContent}}</dd>',
     selectedClass: 'ui-selectbox-selected',
@@ -133,7 +138,10 @@ $.extend(Select.prototype, {
 
 
     close: function () {
-        this._popup && this._popup.close().remove();
+        if (this._popup) {
+            this._popup.close().remove();
+            this.change();
+        }
     },
 
 
@@ -143,7 +151,7 @@ $.extend(Select.prototype, {
         var select = this.select;
         var selectbox = that._selectbox;
 
-        if (select[0].disabled || !select[0].length) {
+        if (!select[0].length) {
             return false;
         }
 
@@ -152,7 +160,7 @@ $.extend(Select.prototype, {
         var bottomHeight = $(window).height() - topHeight - selectHeight;
         var maxHeight = Math.max(topHeight, bottomHeight) - 20;
 
-        var popup = this._popup = new Popup;
+        var popup = this._popup = new Popup();
         popup.backdropOpacity = 0;
         popup.node.innerHTML = this._dropdownHtml();
 
@@ -201,15 +209,19 @@ $.extend(Select.prototype, {
         };
 
 
+        // 记录展开前的 value
+        this._oldValue = this.select.val();
+
         popup.showModal(selectbox[0]);
     },
 
 
     selected: function (index) {
 
+        // 检查当前项是否被禁用
         if (this._getOption(index).attr('disabled')) {
             return false;
-        };
+        }
 
         var dropdown = this._dropdown;
         var option = this._dropdown.find('[data-option=' + index + ']');
@@ -225,44 +237,42 @@ $.extend(Select.prototype, {
         // 更新模拟控件的显示值
         this._value.html(this._getOption(index).html());
 
-        // 更新 Select 对象属性
+        // 更新 Selectbox 对象属性
         this.value = value;
         this.selectedIndex = index;
 
-        this.change();
+        // 同步数据到原生 select
+        this.select[0].selectedIndex = this.selectedIndex;
+        this.select[0].value = this.value;
 
         return true;
     },
 
 
     change: function () {
-        if (!this.select[0].disabled) {
-            this.select[0].selectedIndex = this.selectedIndex;
-            this.select[0].value = this.value;
+        if (this._oldValue !== this.value) {
             this.select.triggerHandler('change');
         }
     },
 
 
     click: function () {
-        if (!this.select[0].disabled) {
-            this.select.focus();
-            this._popup && this._popup.open ? this.close() : this.show();
+        this.select.focus();
+        if (this._popup && this._popup.open) {
+            this.close();
+        } else {
+            this.show();
         }
     },
 
 
     focus: function () {
-        if (!this.select[0].disabled) {
-            this._selectbox.addClass(this.focusClass);
-        }
+        this._selectbox.addClass(this.focusClass);
     },
 
 
     blur: function () {
-        if (!this.select[0].disabled) {
-            this._selectbox.removeClass(this.focusClass);
-        }
+        this._selectbox.removeClass(this.focusClass);
     },
 
 
@@ -302,9 +312,13 @@ $.extend(Select.prototype, {
         var getOptionsData = function ($options) {
             $options.each(function () {
                 var $this = $(this);
-                var className = this.selected
-                ? that.selectedClass :
-                    this.disabled ? that.disabledClass : '';
+                var className = '';
+
+                if (this.selected) {
+                    className = that.selectedClass;
+                } else {
+                    className = this.disabled ? that.disabledClass : '';
+                }
 
                 options += that._tpl(that.optionHtml, $.extend({
                         value: $this.val(),
@@ -313,7 +327,7 @@ $.extend(Select.prototype, {
                         textContent: $this.html(),
                         index: index,
                         className: className
-                    }, $this.data(), selectData))
+                    }, $this.data(), selectData));
 
                 index ++;
             });
@@ -392,21 +406,23 @@ $.extend(Select.prototype, {
                 break;
         }
 
-        p && event.preventDefault();
+        if (p){
+            event.preventDefault();
+        }
     }
 
 });
 
 
 return function (elem, options) {
-    // 注意：不要返回 Select 更多接口给外部，只保持装饰用途
+    // 注意：不要返回 Selectbox 更多接口给外部，只保持装饰用途
     // 保证模拟的下拉是原生控件的子集，这样可以随时在项目中撤销装饰
 
     if (elem.type === 'select') {
-        new Select(elem, options);
+        new Selectbox(elem, options);
     } else {
         $(elem).each(function () {
-            new Select(this, options);
+            new Selectbox(this, options);
         });
     }
 };

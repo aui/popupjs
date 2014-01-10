@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <style>
 body {
+  max-width: 620px;
+  margin: auto;
   font-family: Helvetica, arial, sans-serif;
   font-size: 14px;
   line-height: 1.6;
@@ -21,19 +23,6 @@ body > *:last-child {
 }
 a {
   color: #4183C4;
-}
-a.absent {
-  color: #cc0000;
-}
-a.anchor {
-  display: block;
-  padding-left: 30px;
-  margin-left: -30px;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
 }
 h1, h2, h3, h4, h5, h6 {
   margin: 20px 0 10px;
@@ -68,6 +57,10 @@ h6 tt, h6 code {
 h1 {
   font-size: 28px;
   color: black;
+  text-align: center;
+}
+h6 {
+  text-align: center;
 }
 h2 {
   font-size: 24px;
@@ -147,7 +140,7 @@ dl dd {
   padding: 0 15px;
 }
 blockquote {
-  border-left: 4px solid #dddddd;
+  border-left: 2px solid #dddddd;
   padding: 0 15px;
   color: #777777;
 }
@@ -192,80 +185,6 @@ th :last-child, td :last-child {
 img {
   max-width: 100%;
 }
-span.frame {
-  display: block;
-  overflow: hidden;
-}
-span.frame > span {
-  border: 1px solid #dddddd;
-  display: block;
-  float: left;
-  overflow: hidden;
-  margin: 13px 0 0;
-  padding: 7px;
-  width: auto;
-}
-span.frame span img {
-  display: block;
-  float: left;
-}
-span.frame span span {
-  clear: both;
-  color: #333333;
-  display: block;
-  padding: 5px 0 0;
-}
-span.align-center {
-  display: block;
-  overflow: hidden;
-  clear: both;
-}
-span.align-center > span {
-  display: block;
-  overflow: hidden;
-  margin: 13px auto 0;
-  text-align: center;
-}
-span.align-center span img {
-  margin: 0 auto;
-  text-align: center;
-}
-span.align-right {
-  display: block;
-  overflow: hidden;
-  clear: both;
-}
-span.align-right > span {
-  display: block;
-  overflow: hidden;
-  margin: 13px 0 0;
-  text-align: right;
-}
-span.align-right span img {
-  margin: 0;
-  text-align: right;
-}
-span.float-left {
-  display: block;
-  margin-right: 13px;
-  overflow: hidden;
-  float: left;
-}
-span.float-left span {
-  margin: 13px 0 0;
-}
-span.float-right {
-  display: block;
-  margin-left: 13px;
-  overflow: hidden;
-  float: right;
-}
-span.float-right > span {
-  display: block;
-  overflow: hidden;
-  margin: 13px auto 0;
-  text-align: right;
-}
 code, tt {
   margin: 0 2px;
   padding: 0 5px;
@@ -281,33 +200,24 @@ pre code {
   border: none;
   background: transparent;
 }
-.highlight pre {
-  background-color: #f8f8f8;
-  border: 1px solid #cccccc;
-  font-size: 13px;
-  line-height: 19px;
-  overflow: auto;
-  padding: 6px 10px;
-  border-radius: 3px;
-}
 pre {
-  background-color: #f8f8f8;
-  border: 1px solid #cccccc;
+  background-color: #303030;
   font-size: 13px;
   line-height: 19px;
   overflow: auto;
   padding: 6px 10px;
-  border-radius: 3px;
 }
-pre code, pre tt {
+pre code {
+  color: #f2f2f2;
+  border: none;
+  padding: 0;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+pre tt {
   background-color: transparent;
   border: none;
-}
-@media screen and (min-width: 914px) {
-  body {
-    width: 760px;
-    margin: 0 auto;
-  }
 }
 @media print {
   table, pre {
@@ -328,7 +238,7 @@ pre code, pre tt {
 
 <h2>关于</h2>
 
-<p>select 修饰器 - 让 select 原生控件可自定义样式与结构</p>
+<p>select 修饰器 - 让 select 原生控件可自定义样式与结构。</p>
 
 <p><strong>请注意</strong>：原生 select 是一个很基础的 UI 控件，包含大量的交互逻辑。如果想要“美化”它必须重新使用 HTML 与 CSS 实现一套，复杂度极高，作为前端工程师的我们应该清楚的知道模拟控件很多时候是弊大于利的，如果你仍然认为值得尝试，请相信这是你见过的世界上最负责的模拟下拉控件，没有之一。</p>
 
@@ -368,9 +278,9 @@ pre code, pre tt {
 
 <ul>
 <li>IE6~IE11</li>
-<li>Chrome</li>
+<li>Chrome（包括 Android 平台）</li>
+<li>Safari（包括 iOS 平台）</li>
 <li>Firefox</li>
-<li>Safari</li>
 <li>Opera</li>
 </ul>
 
@@ -381,6 +291,8 @@ pre code, pre tt {
 
 <pre><code>var selectbox = require('./popupjs/src/selectbox');
 </code></pre>
+
+<blockquote><p>  selectbox 源码使用 CMD 的模块形式，全局依赖 jquery 模块。亦可自行合并源码并改为普通 jquery 插件调用。</p></blockquote>
 
 <h3>接口</h3>
 
@@ -419,7 +331,7 @@ pre code, pre tt {
 
 <p>例如我们生成一个包含图片的下拉列表：</p>
 
-<pre><code>&lt;select id="demo-select-img"&gt;
+<pre><code>&lt;select id="demo-select-img" onchange="alert(this.value)"&gt;
     &lt;optgroup label="常用"&gt;
         &lt;option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif"&gt;微笑&lt;/option&gt;
         &lt;option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif"&gt;瘪嘴&lt;/option&gt;
@@ -436,14 +348,14 @@ pre code, pre tt {
 &lt;/select&gt;
 </code></pre>
 
-<p>上面是原生 select 控件的 HTML 代码，注意到我们将图片属性写在了<code>&lt;option&gt;</code>标签的自定义属性<code>data-icon</code>上，接下来我们根据它转换带图的下拉选项：</p>
+<p>上面是原生 select 控件的 HTML 代码，注意到我们将图片地址写在了<code>&lt;option&gt;</code>标签的自定义属性<code>data-icon</code>上，接下来我们根据它转换带图的下拉选项：</p>
 
 <pre><code>selectbox(document.getElementById('demo-select-img'), {
     optionHtml: '&lt;dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1"&gt;&lt;img src="{{icon}}" alt="icon" style="width:16px;height:16px;vertical-align:middle" /&gt; {{textContent}}&lt;/dd&gt;'
 });
 </code></pre>
 
-<p><select id="demo-diy">
+<p><select id="demo-diy" onchange="alert(this.value)">
     <optgroup label="常用">
         <option value="e100" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e100.gif">微笑</option>
         <option value="e101" data-icon="http://ctc.qzonestyle.gtimg.cn/qzone/em/e101.gif">瘪嘴</option>
@@ -645,6 +557,11 @@ pre code, pre tt {
 
 
 <p><a href="../test/selectbox.html">新页面打开</a></p>
+
+<script>!function(a){function d(){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=0.25, maximum-scale=1.6")}var c,b=a.getElementsByTagName("meta");if(navigator.userAgent.match(/iPhone/i)){for(c=0;c<b.length;c++)"viewport"==b[c].name&&(b[c].content="width=device-width, minimum-scale=1.0, maximum-scale=1.0");a.addEventListener("gesturestart",d,!1)}}(document);</script>
+
+
+
 
 <!--[SeaJS code]-->
 
