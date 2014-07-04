@@ -1,0 +1,27 @@
+{
+  "name": "popupjs",
+  "version": "1.0.0",
+  "readmeFilename": "README.md",
+  "description": "W3C HTML5 Dialog Plus",
+  "homepage": "https://github.com/aui/popupjs",
+  "keywords": [
+    "dialog",
+    "popup"
+  ],
+  "author": "aui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aui/popupjs.git"
+  },
+  "main": "./src/popup.js",
+  "dependencies": {
+    "jquery": "*"
+  },
+  "devDependencies": {
+    "grunt-cli": "*",
+    "grunt": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-unwrap": "*"
+  },
+  "license": "LGPL"
+}
