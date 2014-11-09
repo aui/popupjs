@@ -1,66 +1,102 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Popupjs by aui</title>
+    <meta name="description" content="Popupjs : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Popupjs</title>
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
 
-        <header>
-          <h1>Popupjs</h1>
-          <h2></h2>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/aui/popupjs">View on GitHub</a>
+
+          <h1 id="project_title">Popupjs</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/aui/popupjs/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/aui/popupjs/tarball/master">Download this project as a tar.gz file</a>
+            </section>
         </header>
+    </div>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/aui/popupjs/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/aui/popupjs/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/aui/popupjs" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="popupjs" class="anchor" href="#popupjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Popup.js</h1>
 
-        <hr>
+<p>基于 <a href="http://www.w3.org/TR/2013/CR-html5-20130806/interactive-elements.html#the-dialog-element">W3C HTML5 Dialog API</a> 的弹出层基础类。</p>
 
-        <section id="main_content">
-          <h1>
-<a name="popupjs" class="anchor" href="#popupjs"><span class="octicon octicon-link"></span></a>PopupJS</h1>
-
-<p>基于 <a href="http://www.w3.org/TR/2013/CR-html5-20130806/interactive-elements.html#the-dialog-element">W3C HTML5 Dialog API</a> 的浮层基础类，提供按元素对齐、居中对齐、自动 zIndex、自动无障碍焦点流程等。</p>
+<p>它不提供 UI，但可以通过填充模板构建对读屏器友好访问的对话框、菜单、Tips 等弹出层。</p>
 
 <h2>
-<a name="%E5%BA%94%E7%94%A8%E6%BC%94%E7%A4%BA" class="anchor" href="#%E5%BA%94%E7%94%A8%E6%BC%94%E7%A4%BA"><span class="octicon octicon-link"></span></a>应用演示</h2>
+<a id="特性" class="anchor" href="#%E7%89%B9%E6%80%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>特性</h2>
 
-<p><a href="http://aui.github.io/popupjs/doc/selectbox.html">下拉组件</a></p>
-
-<p><a href="http://aui.github.io/artDialog/doc/index.html">对话框（artDialog）</a></p>
+<ol>
+<li>基于 HTML5 Dialog API</li>
+<li>提供 12 种按元素对齐方式或页面居中显示</li>
+<li>统一管理 zIndex</li>
+<li>不干扰读屏器操作页面</li>
+<li>支持普通与模态浮层</li>
+<li>支持 ARIA 标准</li>
+<li>兼容 IE6 与所有主流浏览器</li>
+</ol>
 
 <h2>
-<a name="%E5%85%BC%E5%AE%B9%E6%80%A7" class="anchor" href="#%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="octicon octicon-link"></span></a>兼容性</h2>
+<a id="演示" class="anchor" href="#%E6%BC%94%E7%A4%BA" aria-hidden="true"><span class="octicon octicon-link"></span></a>演示</h2>
 
-<p>测试通过：IE6~IE11、Chrome、Firefox、Safari、Opera</p>
+<h3>
+<a id="简单使用" class="anchor" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>简单使用</h3>
+
+<ul>
+<li>  <a href="http://aui.github.io/popupjs/test/dialog.html">创建一个简单的 dialog</a>
+</li>
+<li>  <a href="http://aui.github.io/popupjs/test/menu.html">创建一个简单的下拉菜单</a>
+</li>
+<li>  <a href="http://aui.github.io/popupjs/test/bubble.html">创建一个带箭头的气泡浮层</a>
+</li>
+</ul>
+
+<h3>
+<a id="控件封装" class="anchor" href="#%E6%8E%A7%E4%BB%B6%E5%B0%81%E8%A3%85" aria-hidden="true"><span class="octicon octicon-link"></span></a>控件封装</h3>
+
+<ul>
+<li>  <a href="http://aui.github.io/popupjs/doc/selectbox.html">下拉组件（selectbox）</a>
+</li>
+<li>  <a href="http://aui.github.io/artDialog/doc/index.html">对话框（artDialog）</a>
+</li>
+</ul>
 
 <h2>
-<a name="%E6%8E%88%E6%9D%83%E5%8D%8F%E8%AE%AE" class="anchor" href="#%E6%8E%88%E6%9D%83%E5%8D%8F%E8%AE%AE"><span class="octicon octicon-link"></span></a>授权协议</h2>
+<a id="兼容性" class="anchor" href="#%E5%85%BC%E5%AE%B9%E6%80%A7" aria-hidden="true"><span class="octicon octicon-link"></span></a>兼容性</h2>
+
+<p>IE6~IE11、Chrome、Firefox、Safari、Opera</p>
+
+<h2>
+<a id="授权协议" class="anchor" href="#%E6%8E%88%E6%9D%83%E5%8D%8F%E8%AE%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>授权协议</h2>
 
 <p><a href="http://www.gnu.org/licenses/lgpl-2.1.html">LGPL</a></p>
-        </section>
-
-        <footer>
-          Popupjs is maintained by <a href="https://github.com/aui">aui</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
+      </section>
     </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Popupjs maintained by <a href="https://github.com/aui">aui</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
   </body>
 </html>
