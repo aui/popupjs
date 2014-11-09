@@ -1,6 +1,6 @@
 #	Popup.js
 
-基于 [W3C HTML5 Dialog API](http://www.w3.org/TR/2013/CR-html5-20130806/interactive-elements.html#the-dialog-element) 的浮层基础类。
+基于 [W3C HTML5 Dialog API](http://www.w3.org/TR/2013/CR-html5-20130806/interactive-elements.html#the-dialog-element) 的浮层基础类，友好的读屏器支持。
 
 适用于：对话框、下拉菜单、Tips 等 UI 组件的基础类。
 
@@ -14,11 +14,18 @@
 6. 支持 ARIA 标准
 7. 兼容 IE6 与所有主流浏览器
 
-##	应用演示
+##	演示
 
-[下拉组件](http://aui.github.io/popupjs/doc/selectbox.html)
+###	简单使用
 
-[对话框（artDialog）](http://aui.github.io/artDialog/doc/index.html)
+*	[创建一个简单的 dialog](http://aui.github.io/popupjs/test/dialog.html)
+*	[创建一个简单的下拉菜单](http://aui.github.io/popupjs/test/menu.html)
+*	[创建一个带箭头的气泡浮层](http://aui.github.io/popupjs/test/bubble.html)
+
+###	控件封装
+
+*	[下拉组件](http://aui.github.io/popupjs/doc/selectbox.html)
+*	[对话框（artDialog）](http://aui.github.io/artDialog/doc/index.html)
 
 ##	兼容性
 
