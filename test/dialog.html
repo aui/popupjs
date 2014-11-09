@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+
+	<style>
+	.ui-dialog {
+		padding: 20px;
+	    *zoom:1;
+	    _float: left;
+	    position: relative;
+	    background-color: #FFF;
+	    border: 1px solid #999;
+	    outline: 0;
+	    background-clip: padding-box;
+	    font-family: Helvetica, arial, sans-serif;
+	    font-size: 14px;
+	    line-height: 1.428571429;
+	    color: #333;
+	    opacity: 0;
+	    -webkit-transform: scale(0);
+	    transform: scale(0);
+	    -webkit-transition: -webkit-transform .15s ease-in-out, opacity .15s ease-in-out;
+	    transition: transform .15s ease-in-out, opacity .15s ease-in-out;
+	}
+	.ui-popup-show .ui-dialog {
+	    opacity: 1;
+	    -webkit-transform: scale(1);
+	    transform: scale(1);
+	}
+	.ui-popup-focus .ui-dialog {
+	    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+	}
+	</style>
+</head>
+<body>
+
+
+<button id="show">show dialog</button> <button id="showModal">show modalDialog</button>
+<script src="../lib/sea.js"></script>
+<script>
+seajs.config({
+  alias: {
+    "jquery": "jquery-1.10.2.js"
+  }
+});
+</script>
+
+<script>
+seajs.use(['jquery', '../src/popup.js'], function ($, Popup) {
+
+	var dialog = function () {
+		var popup = new Popup();
+		popup.innerHTML =
+		 '<div class="ui-dialog">'
+		+	'<p>hello world</p>'
+		+	'<button id="dialog-close">close</button>'
+		+'</div>';
+		popup.show();
+
+		$('#dialog-close').one('click', function () {
+			popup.close().remove();
+		});
+	};
+
+
+	var modalDialog = function () {
+		var popup = new Popup();
+		popup.innerHTML =
+		 '<div class="ui-dialog">'
+		+	'<p>hello world</p>'
+		+	'<button id="modalDialog-close">close</button>'
+		+'</div>';
+		popup.showModal();
+
+		$('#modalDialog-close').one('click', function () {
+			popup.close().remove();
+		});
+	};
+
+	$('#show').on('click', dialog);
+	$('#showModal').on('click', modalDialog);
+});
+</script>
+</body>
+</html>

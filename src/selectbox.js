@@ -167,13 +167,12 @@ $.extend(Selectbox.prototype, {
         var maxHeight = Math.max(topHeight, bottomHeight) - MARGIN;
 
         var popup = this._popup = new Popup();
-        popup.backdropOpacity = 0;
         popup.node.innerHTML = this._dropdownHtml();
 
         this._dropdown = $(popup.node);
-        $(popup.backdrop).on(this._clickType, function () {
-            that.close();
-        });
+        $(popup.backdrop)
+        .css('opacity', 0)
+        .on(this._clickType, $.proxy(this.close, this));
 
 
         var children = that._dropdown.children();
