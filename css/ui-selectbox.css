@@ -1,6 +1,7 @@
 /*!
- * selectbox.js
- * Date: 2013-12-13
+ * selectbox.css
+ * Date: 2014-01-10
+ * https://github.com/aui/popupjs
  * (c) 2009-2013 TangBin, http://www.planeArt.cn
  *
  * This is licensed under the GNU LGPL, version 2.1 or later.
@@ -37,6 +38,14 @@
      -moz-transition: all linear 0.2s;
        -o-transition: all linear 0.2s;
           transition: all linear 0.2s;
+}
+.ui-selectbox-open {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    background: -moz-linear-gradient(top, #e5e5e5 100%, #fafafa 0%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(100%,#e5e5e5), color-stop(0%,#fafafa));
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#fafafa',GradientType=0 );
+    background: -webkit-linear-gradient(top, #e5e5e5 100%, #fafafa 0%);
+    background: linear-gradient(to bottom, #e5e5e5 100%, #fafafa 0%);
 }
 .ui-selectbox:hover {
     border: 1px solid #09E;
@@ -90,7 +99,7 @@ select[disabled] + .ui-selectbox:hover {
 .ui-selectbox-focus {
     border: 1px solid #09E;
     outline: 0 none;
-    box-shadow: 0 0 3px rgba(8, 74, 195, .5);
+    /*box-shadow: 0 0 3px rgba(8, 74, 195, .5);*/
 }
 .ui-selectbox-dropdown {
     position: relative;

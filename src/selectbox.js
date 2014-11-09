@@ -15,12 +15,17 @@ var css = '../css/ui-selectbox.css';
 
 
 // css loader: RequireJS & SeaJS
-css = require[require.toUrl ? 'toUrl' : 'resolve'](css);
-css = '<link rel="stylesheet" href="' + css + '" />';
-if ($('base')[0]) {
-    $('base').before(css);
-} else {
-    $('head').append(css);
+if (css) {
+    var fn = require[require.toUrl ? 'toUrl' : 'resolve'];
+    if (fn) {
+        css = fn(css);
+        css = '<link rel="stylesheet" href="' + css + '" />';
+        if ($('base')[0]) {
+            $('base').before(css);
+        } else {
+            $('head').append(css);
+        } 
+    }
 }
 
 
@@ -155,19 +160,19 @@ $.extend(Selectbox.prototype, {
             return false;
         }
 
+        var MARGIN = 20;
         var selectHeight = select.outerHeight();
         var topHeight = select.offset().top - $(document).scrollTop();
         var bottomHeight = $(window).height() - topHeight - selectHeight;
-        var maxHeight = Math.max(topHeight, bottomHeight) - 20;
+        var maxHeight = Math.max(topHeight, bottomHeight) - MARGIN;
 
         var popup = this._popup = new Popup();
-        popup.backdropOpacity = 0;
         popup.node.innerHTML = this._dropdownHtml();
 
         this._dropdown = $(popup.node);
-        $(popup.backdrop).on(this._clickType, function () {
-            that.close();
-        });
+        $(popup.backdrop)
+        .css('opacity', 0)
+        .on(this._clickType, $.proxy(this.close, this));
 
 
         var children = that._dropdown.children();
@@ -376,8 +381,8 @@ $.extend(Selectbox.prototype, {
         var p;
 
         switch (event.keyCode) {
+            // backspace
             case 8:
-                // backspace
                 p = true;
                 break;
 

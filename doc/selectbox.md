@@ -46,13 +46,20 @@ select 修饰器 - 让 select 原生控件可自定义样式与结构。
 
 ##	调用
 
-在模块中引入 selectbox（使用 RequireJS 或 SeaJS 加载）：
+###	1.直接引用
+
+先引用 jquery，然后：
+
+	<link rel="stylesheet" href="css/ui-selectbox.css">
+	<script src="dist/selectbox-min.js"></script>
+
+###	2.作为 RequireJS 或 SeaJS 的模块引入
 
 ```
 var selectbox = require('./popupjs/src/selectbox');
 ```
 
->	selectbox 源码使用 CMD 的模块形式，全局依赖 jquery 模块。亦可自行合并源码并改为普通 jquery 插件调用。
+**注意：**内部依赖全局模块``require('jquery')``，请注意全局模块配置是否正确。
 
 ###	接口
 
@@ -353,33 +360,3 @@ seajs.use(['jquery', '../src/selectbox'], function ($, selectbox) {
 });
 </script>
 <!--[/SeaJS code]-->
-
-<!--[RequireJS code]
-<script src="../lib/require.js"></script>
-<script>
-require.config({
-	paths: {
-		jquery: '../lib/jquery-1.10.2'
-	}
-});
-require(['jquery', '../src/selectbox'], function ($, selectbox) {
-    
-    $('#start-demo-basic').one('click', function () {
-        selectbox(document.getElementById('demo-basic'));
-        this.disabled = true;
-    });
-    $('#start-demo-diy').one('click', function () {
-        selectbox(document.getElementById('demo-diy'), {
-            optionHtml: '<dd class="ui-selectbox-option {{className}}" data-option="{{index}}" tabindex="-1"><img src="{{icon}}" alt="icon" style="width:16px;height:16px;vertical-align:middle" /> {{textContent}}</dd>'
-        });
-        this.disabled = true;
-    });
-    
-    $('html, body').css('height', '100%');
-    
-    $('#test select').each(function () {
-        selectbox(this);
-    });
-});
-</script>
-[/RequireJS code]-->

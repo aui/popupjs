@@ -287,12 +287,18 @@ pre tt {
 
 <h2>调用</h2>
 
-<p>在模块中引入 selectbox（使用 RequireJS 或 SeaJS 加载）：</p>
+<h3>1.直接引用</h3>
+
+<pre><code>&lt;link rel="stylesheet" href="css/ui-selectbox.css"&gt;
+&lt;script src="dist/selectbox-min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h3>2.作为 RequireJS 或 SeaJS 的模块引入</h3>
 
 <pre><code>var selectbox = require('./popupjs/src/selectbox');
 </code></pre>
 
-<blockquote><p>  selectbox 源码使用 CMD 的模块形式，全局依赖 jquery 模块。亦可自行合并源码并改为普通 jquery 插件调用。</p></blockquote>
+<p><strong>注意：</strong>内部依赖全局模块<code>require('jquery')</code>，请注意全局模块配置是否正确。</p>
 
 <h3>接口</h3>
 

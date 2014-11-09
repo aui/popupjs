@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+
+	<style>
+	.ui-menu {
+		padding: 20px;
+	    *zoom:1;
+	    _float: left;
+	    position: relative;
+	    background-color: #FFF;
+	    border: 1px solid #999;
+	    outline: 0;
+	    background-clip: padding-box;
+	    font-family: Helvetica, arial, sans-serif;
+	    font-size: 14px;
+	    line-height: 1.428571429;
+	    color: #333;
+	    opacity: 0;
+	    -webkit-transform: scale(0);
+	    transform: scale(0);
+	    -webkit-transition: -webkit-transform .15s ease-in-out, opacity .15s ease-in-out;
+	    transition: transform .15s ease-in-out, opacity .15s ease-in-out;
+	}
+	.ui-popup-show .ui-menu {
+	    opacity: 1;
+	    -webkit-transform: scale(1);
+	    transform: scale(1);
+	}
+	.ui-popup-focus .ui-menu {
+	    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+	}
+	</style>
+</head>
+<body>
+
+
+<button id="test">show menu</button>
+<script src="../lib/sea.js"></script>
+<script>
+seajs.config({
+  alias: {
+    "jquery": "jquery-1.10.2.js"
+  }
+});
+</script>
+
+<script>
+seajs.use(['jquery', '../src/popup.js'], function ($, Popup) {
+
+	var menu = function () {
+		var popup = new Popup();
+		popup.align = 'bottom left';
+		popup.innerHTML = '<div class="ui-menu">hello world</div>';
+		
+		// 遮罩
+		$(popup.backdrop)
+		// 设置为全透明
+		.css('opacity', 0)
+		// 点击遮罩关闭弹出层对象
+		.on('click', function () {
+			popup.close().remove();
+		});
+
+		// ESC 快捷键关闭浮层
+		$(document).one('keydown', function (event) {
+			if (event.keyCode === 27) {
+				popup.close().remove();
+			}
+		});
+
+		popup.showModal(this);
+	};
+
+	$('#test').on('click', menu);
+});
+</script>
+</body>
+</html>
