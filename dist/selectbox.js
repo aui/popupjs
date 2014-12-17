@@ -854,11 +854,10 @@ $.extend(Selectbox.prototype, {
         children.css({
             minWidth: selectbox.innerWidth(),
             maxHeight: maxHeight,
-            width: isIE6 ? Math.max(selectbox.innerWidth(), children.outerWidth()) : 'auto',
-            height: isIE6 ? Math.min(maxHeight, children.outerHeight()) : 'auto',
             overflowY: 'auto',
             overflowX: 'hidden'
         });
+
 
 
         this._dropdown
@@ -890,6 +889,15 @@ $.extend(Selectbox.prototype, {
         this._oldValue = this.select.val();
 
         popup.showModal(selectbox[0]);
+
+        if (isIE6) {
+            children.css({
+                width: Math.max(selectbox.innerWidth(), children.outerWidth()),
+                height: Math.min(maxHeight, children.outerHeight())
+            });
+            
+            popup.reset();
+        }
     },
 
 
